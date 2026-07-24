@@ -1,0 +1,159 @@
+/* --------------------------------------------------
+   Inquiry Modal Glassmorphism Styles
+-------------------------------------------------- */
+.inquiry-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 14, 13, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10500;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.inquiry-modal-card {
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 36px 32px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(220, 200, 150, 0.4);
+}
+
+.inquiry-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #78716c;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.inquiry-close-btn:hover {
+  color: #1c1917;
+  transform: rotate(90deg);
+}
+
+.inquiry-modal-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #a07d32;
+}
+
+.inquiry-modal-title {
+  font-family: 'Cinzel', 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.inquiry-modal-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: #6a645d;
+  line-height: 1.5;
+}
+
+/* Selected Product Summary Badge */
+.selected-product-badge {
+  background-color: #faf7f2;
+  border: 1px solid #e8e2d5;
+}
+
+.selected-product-img {
+  width: 50px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.selected-product-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.selected-product-sku {
+  font-size: 0.75rem;
+  color: #8c8275;
+}
+
+/* Form inputs */
+.form-label-custom {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3e3a36;
+  margin-bottom: 4px;
+}
+
+.form-input-custom {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #dddad3;
+  color: #1c1917;
+}
+
+.form-input-custom:focus {
+  border-color: #a07d32;
+  box-shadow: 0 0 0 3px rgba(160, 125, 50, 0.15);
+}
+
+.btn-submit-inquiry {
+  background-color: #1c1917;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn-submit-inquiry:hover {
+  background-color: #383431;
+  transform: translateY(-1px);
+}
+
+.btn-whatsapp-inquiry {
+  background-color: #25d366;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn-whatsapp-inquiry:hover {
+  background-color: #1eb956;
+  transform: translateY(-1px);
+}
+
+.success-icon-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #e6f7ec;
+  color: #25d366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

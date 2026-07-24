@@ -1,0 +1,147 @@
+/* --------------------------------------------------
+   Curated Season Section Styles
+-------------------------------------------------- */
+.curated-section {
+  background-color: #faf8f4;
+  /* Match warm ivory background of the theme */
+  position: relative;
+  z-index: 1;
+}
+
+/* Header block styling */
+.curated-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 5px;
+  color: #3d4928;
+  /* Dark olive branding color */
+  margin-bottom: 12px;
+}
+
+.curated-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #555555;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Custom Grid Spacing (Edge-to-Edge with 4px gap) */
+.curated-grid-custom {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  width: 100%;
+}
+
+@media (max-width: 991.98px) {
+  .curated-grid-custom {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .curated-grid-custom {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    /* Slightly larger vertical gaps on mobile */
+  }
+}
+
+/* --------------------------------------------------
+   Collection Image Cards
+-------------------------------------------------- */
+.curated-card-link {
+  display: block;
+  text-decoration: none;
+}
+
+.curated-card {
+  aspect-ratio: 3 / 4;
+  /* Maintain consistent vertical cards */
+  background-color: #e8e2d5;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+}
+
+.curated-card-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Gradient overlay to ensure text is highly legible */
+.curated-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.3) 30%,
+      rgba(0, 0, 0, 0.05) 60%,
+      rgba(0, 0, 0, 0) 100%);
+  z-index: 1;
+  transition: opacity 0.4s ease;
+  opacity: 0.8;
+}
+
+/* Label text at the bottom center of the card */
+.curated-card-content {
+  z-index: 2;
+  padding-bottom: 30px;
+}
+
+.curated-card-label {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.curated-card:hover {
+  box-shadow: 0 15px 35px rgba(61, 73, 40, 0.15);
+}
+
+.curated-card:hover .curated-card-img {
+  transform: scale(1.04);
+}
+
+.curated-card:hover .curated-card-overlay {
+  opacity: 0.9;
+}
+
+.curated-card:hover .curated-card-label {
+  color: #e8c57b;
+  /* Elegant gold highlight on hover */
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(184, 152, 81, 0.6);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .curated-title {
+    font-size: 1.7rem;
+    letter-spacing: 3px;
+  }
+
+  .curated-card-label {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+}

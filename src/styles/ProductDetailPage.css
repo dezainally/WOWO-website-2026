@@ -1,0 +1,147 @@
+/* --------------------------------------------------
+   Product Detail Page Styles
+-------------------------------------------------- */
+.pdp-tag-badge {
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  background-color: #a07d32;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.main-image-stage {
+  height: 480px;
+  background-color: #f7f4ef;
+}
+
+.pdp-main-img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-btn {
+  width: 76px;
+  height: 90px;
+  border: 2px solid transparent !important;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.thumbnail-btn.active,
+.thumbnail-btn:hover {
+  opacity: 1;
+  border-color: #a07d32 !important;
+}
+
+.thumbnail-img {
+  object-fit: cover;
+}
+
+.pdp-category-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #a07d32;
+}
+
+.pdp-title {
+  font-family: 'Cinzel', 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.pdp-short-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.pdp-price-badge-box {
+  background-color: #faf7f0;
+  border-color: #e8e0d0 !important;
+}
+
+.stock-status-badge {
+  background-color: #e6f7ec;
+  color: #1f9d55;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.btn-pdp-request-price {
+  background-color: #1c1917;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  border: none;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn-pdp-request-price:hover {
+  background-color: #a07d32;
+  transform: translateY(-2px);
+}
+
+.btn-pdp-whatsapp {
+  background-color: #25d366;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  transition: background-color 0.25s ease;
+}
+
+.btn-pdp-whatsapp:hover {
+  background-color: #1eb956;
+}
+
+.btn-pdp-call {
+  background-color: #ffffff;
+  color: #1c1917;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1.5px solid #1c1917;
+  border-radius: 8px;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.btn-pdp-call:hover {
+  background-color: #1c1917;
+  color: #ffffff;
+}
+
+.tab-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #78716c;
+  border-bottom: 2px solid transparent !important;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tab-btn.active {
+  color: #a07d32;
+  border-bottom-color: #a07d32 !important;
+}
+
+.line-height-16 {
+  line-height: 1.65;
+}

@@ -1,0 +1,354 @@
+/* --------------------------------------------------
+   Typography & Themes
+-------------------------------------------------- */
+.header-wrapper {
+  z-index: 1030;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* --------------------------------------------------
+   Announcement Bar (Marquee Ticker)
+-------------------------------------------------- */
+.announcement-bar {
+  background-color: #3d4928; /* Premium traditional dark olive */
+  color: #faf8f4;
+  height: 38px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid rgba(184, 152, 81, 0.2);
+}
+
+.call-now-topbar-btn {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.call-now-topbar-btn:hover {
+  background-color: #a07d32;
+  border-color: #a07d32;
+}
+
+.bg-gold {
+  background-color: #a07d32 !important;
+  color: #ffffff;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+}
+
+.btn-request-header {
+  background-color: #1c1917;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: none;
+  margin-left: 8px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-request-header:hover {
+  background-color: #a07d32;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: header-marquee 35s linear infinite;
+}
+
+.marquee-content span {
+  display: inline-block;
+  padding-right: 4rem;
+}
+
+.code-highlight {
+  color: #e8c57b; /* Soft gold for coupon codes */
+  font-weight: 700;
+}
+
+.announcement-close-btn {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.announcement-close-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+@keyframes header-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+}
+
+/* --------------------------------------------------
+   Main Custom Navbar
+-------------------------------------------------- */
+.custom-navbar {
+  background-color: #faf8f4 !important; /* Warm ivory/cream background */
+  border-bottom: 1px solid #e8e2d5;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-navbar .container-fluid {
+  position: relative; /* Set parent position for absolute centering of logo */
+}
+
+/* --------------------------------------------------
+   Logo Section
+-------------------------------------------------- */
+.logo-brand {
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.logo-brand:hover {
+  opacity: 0.9;
+}
+
+.logo-image {
+  max-height: 76px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+  transition: transform 0.3s ease;
+}
+
+.logo-brand:hover .logo-image {
+  transform: scale(1.03);
+}
+
+@media (min-width: 1200px) {
+  .logo-brand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 !important;
+    z-index: 10;
+  }
+}
+
+/* --------------------------------------------------
+   Navigation Links
+-------------------------------------------------- */
+.nav-link-custom {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #2b2b2b !important;
+  padding: 0.5rem 0.6rem !important;
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-link-custom:hover,
+.nav-link-custom.active {
+  color: #b89851 !important; /* Gold hover color */
+}
+
+/* Underline slide effect */
+.nav-link-custom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1.5px;
+  background-color: #b89851;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-link-custom:hover::after,
+.nav-link-custom.active::after {
+  width: 80%;
+  left: 10%;
+}
+
+.dropdown-chevron {
+  transition: transform 0.2s ease;
+}
+
+.nav-link-custom:hover .dropdown-chevron {
+  transform: translateY(1px);
+}
+
+/* --------------------------------------------------
+   Social & Utilities (Right Side)
+-------------------------------------------------- */
+.header-right-section {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  gap: 22px !important; /* Increased spacing between social icons */
+}
+
+.border-light-sep {
+  border-color: #e8e2d5 !important;
+}
+
+.social-icon-link {
+  color: #555555;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; /* Increased size from 28px */
+  height: 44px; /* Increased size from 28px */
+  border-radius: 50%;
+  background-color: rgba(232, 226, 213, 0.25);
+}
+
+.social-icon-link svg {
+  width: 20px; /* Increased icon size from 16px */
+  height: 20px; /* Increased icon size from 16px */
+}
+
+.social-icon-link:hover {
+  color: #ffffff;
+  background-color: #b89851;
+  transform: translateY(-2.5px);
+}
+
+.login-link {
+  color: #555555;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.login-link:hover {
+  color: #b89851;
+}
+
+.util-divider {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.util-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: #333333;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.util-btn:hover {
+  color: #b89851;
+  transform: scale(1.08);
+}
+
+/* Badges */
+.wishlist-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background-color: #3d4928; /* Muted olive */
+  color: #ffffff;
+  font-size: 0.6rem;
+  font-weight: 600;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-btn-classic {
+  color: #333333;
+  transition: color 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.cart-btn-classic:hover {
+  color: #b89851;
+}
+
+.cart-icon-wrapper {
+  display: inline-flex;
+}
+
+.cart-badge-classic {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background-color: #b89851; /* Premium gold */
+  color: #ffffff;
+  font-size: 0.6rem;
+  font-weight: 600;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-total-text {
+  font-weight: 500;
+  color: #444444;
+}
+
+/* --------------------------------------------------
+   Responsive Design
+-------------------------------------------------- */
+@media (max-width: 1199.98px) {
+  .navbar-collapse-custom {
+    background-color: #faf8f4;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #e8e2d5;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .logo-main-text {
+    font-size: 1.15rem;
+  }
+  .logo-sub-text {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+  }
+}

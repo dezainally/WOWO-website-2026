@@ -1,0 +1,153 @@
+/* --------------------------------------------------
+   Collections Page Styles
+-------------------------------------------------- */
+.bg-light-sand {
+  background-color: #faf8f5;
+}
+
+.catalog-header-banner {
+  background: linear-gradient(135deg, #1c1917 0%, #2c2723 100%);
+  border-bottom: 1px solid rgba(160, 125, 50, 0.3);
+}
+
+.catalog-header-title {
+  font-family: 'Cinzel', 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.catalog-header-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.letter-spacing-3 {
+  letter-spacing: 3px;
+}
+
+.max-w-400 {
+  max-width: 400px;
+}
+
+.category-pill-btn {
+  background-color: #ffffff;
+  border: 1px solid #e5dfd5;
+  color: #57534e;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 20px;
+  transition: all 0.25s ease;
+}
+
+.category-pill-btn:hover,
+.category-pill-btn.active {
+  background-color: #1c1917;
+  color: #ffffff;
+  border-color: #1c1917;
+}
+
+.catalog-product-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-color: #eae5db !important;
+}
+
+.catalog-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(28, 25, 23, 0.12);
+  border-color: #d6c79a !important;
+}
+
+.catalog-tag-badge {
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  background-color: #a07d32;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.catalog-img-wrapper {
+  height: 310px;
+  background-color: #f7f4ef;
+}
+
+.catalog-product-img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.catalog-product-card:hover .catalog-product-img {
+  transform: scale(1.06);
+}
+
+.catalog-sku-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: #a8a29e;
+}
+
+.catalog-product-name {
+  font-family: 'Outfit', 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.catalog-fabric-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #78716c;
+  line-height: 1.4;
+}
+
+.price-on-request-badge {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #a07d32;
+}
+
+.btn-request-price-catalog {
+  background-color: #1c1917;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 6px;
+  border: none;
+  transition: background-color 0.25s ease;
+}
+
+.btn-request-price-catalog:hover {
+  background-color: #a07d32;
+  color: #ffffff;
+}
+
+.btn-whatsapp-catalog {
+  background-color: #e6f7ec;
+  color: #1f9d55;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid #bce6ca;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.btn-whatsapp-catalog:hover {
+  background-color: #25d366;
+  color: #ffffff;
+  border-color: #25d366;
+}
