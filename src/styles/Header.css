@@ -10,7 +10,8 @@
    Announcement Bar (Marquee Ticker)
 -------------------------------------------------- */
 .announcement-bar {
-  background-color: #3d4928; /* Premium traditional dark olive */
+  background-color: #3d4928;
+  /* Premium traditional dark olive */
   color: #faf8f4;
   height: 38px;
   font-family: 'Inter', sans-serif;
@@ -84,7 +85,8 @@
 }
 
 .code-highlight {
-  color: #e8c57b; /* Soft gold for coupon codes */
+  color: #e8c57b;
+  /* Soft gold for coupon codes */
   font-weight: 700;
 }
 
@@ -113,6 +115,7 @@
   0% {
     transform: translate3d(0, 0, 0);
   }
+
   100% {
     transform: translate3d(-33.3333%, 0, 0);
   }
@@ -122,13 +125,16 @@
    Main Custom Navbar
 -------------------------------------------------- */
 .custom-navbar {
-  background-color: #faf8f4 !important; /* Warm ivory/cream background */
+  background-color: #faf8f4 !important;
+  /* Warm ivory/cream background */
   border-bottom: 1px solid #e8e2d5;
+  padding: 0;
   transition: all 0.3s ease-in-out;
 }
 
 .custom-navbar .container-fluid {
-  position: relative; /* Set parent position for absolute centering of logo */
+  position: relative;
+  /* Set parent position for absolute centering of logo */
 }
 
 /* --------------------------------------------------
@@ -144,7 +150,7 @@
 }
 
 .logo-image {
-  max-height: 76px;
+  max-height: 58px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
@@ -153,17 +159,6 @@
 
 .logo-brand:hover .logo-image {
   transform: scale(1.03);
-}
-
-@media (min-width: 1200px) {
-  .logo-brand {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0 !important;
-    z-index: 10;
-  }
 }
 
 /* --------------------------------------------------
@@ -181,7 +176,8 @@
 
 .nav-link-custom:hover,
 .nav-link-custom.active {
-  color: #b89851 !important; /* Gold hover color */
+  color: #b89851 !important;
+  /* Gold hover color */
 }
 
 /* Underline slide effect */
@@ -216,7 +212,8 @@
 .header-right-section {
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
-  gap: 22px !important; /* Increased spacing between social icons */
+  gap: 22px !important;
+  /* Increased spacing between social icons */
 }
 
 .border-light-sep {
@@ -229,15 +226,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px; /* Increased size from 28px */
-  height: 44px; /* Increased size from 28px */
+  width: 44px;
+  /* Increased size from 28px */
+  height: 44px;
+  /* Increased size from 28px */
   border-radius: 50%;
   background-color: rgba(232, 226, 213, 0.25);
 }
 
 .social-icon-link svg {
-  width: 20px; /* Increased icon size from 16px */
-  height: 20px; /* Increased icon size from 16px */
+  width: 20px;
+  /* Increased icon size from 16px */
+  height: 20px;
+  /* Increased icon size from 16px */
 }
 
 .social-icon-link:hover {
@@ -283,7 +284,8 @@
   position: absolute;
   top: -4px;
   right: -6px;
-  background-color: #3d4928; /* Muted olive */
+  background-color: #3d4928;
+  /* Muted olive */
   color: #ffffff;
   font-size: 0.6rem;
   font-weight: 600;
@@ -313,7 +315,8 @@
   position: absolute;
   top: -4px;
   right: -6px;
-  background-color: #b89851; /* Premium gold */
+  background-color: #b89851;
+  /* Premium gold */
   color: #ffffff;
   font-size: 0.6rem;
   font-weight: 600;
@@ -333,13 +336,29 @@
 /* --------------------------------------------------
    Responsive Design
 -------------------------------------------------- */
-@media (max-width: 1199.98px) {
-  .navbar-collapse-custom {
+@media (max-width: 991.98px) {
+  .navbar-collapse {
     background-color: #faf8f4;
-    padding: 10px 15px;
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid #e8e2d5;
     margin-top: 15px;
+    width: 100%;
+    order: 10;
+  }
+
+  .logo-image {
+    max-height: 45px;
+  }
+
+  .social-icon-link {
+    width: 36px;
+    height: 36px;
+  }
+
+  .social-icon-link svg {
+    width: 17px;
+    height: 17px;
   }
 }
 
@@ -347,6 +366,7 @@
   .logo-main-text {
     font-size: 1.15rem;
   }
+
   .logo-sub-text {
     font-size: 0.65rem;
     letter-spacing: 3px;

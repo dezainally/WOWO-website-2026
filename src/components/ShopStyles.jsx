@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { PRODUCTS_DATA } from '../data/productsData';
 import { useInquiry } from '../context/InquiryContext';
@@ -8,6 +8,7 @@ const ShopStyles = () => {
   const { openInquiryModal } = useInquiry();
   const [activeCategory, setActiveCategory] = useState('all');
   const [wishlist, setWishlist] = useState({});
+  const sliderRef = useRef(null);
 
   const toggleWishlist = (e, id) => {
     e.preventDefault();
@@ -18,130 +19,147 @@ const ShopStyles = () => {
     }));
   };
 
-  const filteredProducts = activeCategory === 'all' 
-    ? PRODUCTS_DATA 
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      const scrollAmount = sliderRef.current.clientWidth * 0.75;
+      sliderRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      const scrollAmount = sliderRef.current.clientWidth * 0.75;
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const categories = [
+    { id: 'all', label: 'ALL PIECES' },
+    { id: 'sarees', label: 'SAREES & HALF SAREES' },
+    { id: 'lehengas', label: 'BRIDAL LEHENGAS' },
+    { id: 'fusion', label: 'FUSION WEAR' },
+    { id: 'sherwanis', label: 'SHERWANIS' },
+    { id: 'gowns', label: 'EVENING GOWNS' }
+  ];
+
+  const filteredProducts = activeCategory === 'all'
+    ? PRODUCTS_DATA
     : PRODUCTS_DATA.filter(p => p.category === activeCategory);
 
-  // Repeat for continuous marquee look
-  const displayProducts = [...filteredProducts, ...filteredProducts];
-
   return (
-    <section className="shop-styles-section py-5">
-      <div className="container">
+    <section className="shop-styles-section container-fluid py-5">
+      <div className="container position-relative">
 
-        {/* Section Title & Subheading */}
+        {/* Section Header with Ornament Motif */}
         <div className="text-center mb-4 shop-styles-header px-3">
-          <span className="subtitle-gold">CURATED STYLES</span>
-          <h2 className="shop-styles-title mt-1">EXPLORE OUR SIGNATURE COUTURE</h2>
+          <div className="subtitle-gold-wrapper mb-2 d-flex align-items-center justify-content-center gap-2">
+            <span className="subtitle-gold">CURATED STYLES</span>
+          </div>
+
+          <h2 className="shop-styles-title">EXPLORE OUR SIGNATURE COUTURE</h2>
+
+          {/* Golden Diamond Divider Line */}
+          <div className="shop-styles-divider mx-auto my-3">
+            <span className="divider-line"></span>
+            <span className="divider-diamond">◆</span>
+            <span className="divider-line"></span>
+          </div>
         </div>
 
-        {/* Sub-Category Filter Tags */}
-        <div className="d-flex justify-content-center flex-wrap gap-2 gap-md-3 mb-5 category-filter-bar px-3">
-          <button
-            type="button"
-            className={`category-tag border-0 ${activeCategory === 'all' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('all')}
-          >
-            All Pieces
-          </button>
-          <button
-            type="button"
-            className={`category-tag border-0 ${activeCategory === 'sarees' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('sarees')}
-          >
-            Sarees & Half Sarees
-          </button>
-          <button
-            type="button"
-            className={`category-tag border-0 ${activeCategory === 'lehengas' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('lehengas')}
-          >
-            Bridal Lehengas
-          </button>
-          <button
-            type="button"
-            className={`category-tag border-0 ${activeCategory === 'fusion' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('fusion')}
-          >
-            Fusion Wear
-          </button>
-          <button
-            type="button"
-            className={`category-tag border-0 ${activeCategory === 'sherwanis' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('sherwanis')}
-          >
-            Sherwanis
-          </button>
-          <button
-            type="button"
-            className={`category-tag border-0 ${activeCategory === 'gowns' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('gowns')}
-          >
-            Evening Gowns
-          </button>
+        {/* Pill Category Filter Tabs */}
+        <div className="d-flex justify-content-center flex-wrap gap-2 gap-md-3 mb-4 category-filter-pills px-3">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className={`category-pill-btn ${activeCategory === cat.id ? 'active' : ''}`}
+              onClick={() => setActiveCategory(cat.id)}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
 
-        {/* Continuous Looping Product Track */}
-        <div className="marquee-products-wrapper">
-          <div className="marquee-products-track">
-            {displayProducts.map((product, index) => {
+        {/* Product Slider Container with Left / Right Arrows */}
+        <div className="shop-slider-wrapper position-relative mb-5">
+
+          {/* Left Arrow Button */}
+          <button
+            type="button"
+            className="slider-arrow-btn slider-arrow-prev d-flex align-items-center justify-content-center border-0"
+            onClick={scrollLeft}
+            aria-label="Previous Products"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+            </svg>
+          </button>
+
+          {/* Slider Scroll Track */}
+          <div className="shop-slider-track" ref={sliderRef}>
+            {filteredProducts.map((product, index) => {
               const isWishlisted = !!wishlist[product.id];
               const pImg = product.images ? product.images[0] : product.image;
+              const productTag = product.tag || (index % 5 === 0 ? 'EDIT' : index % 5 === 1 ? 'BESPOKE' : index % 5 === 2 ? 'SIGNATURE' : index % 5 === 3 ? 'EXCLUSIVE' : 'CLASSIC');
+
               return (
-                <div key={`${product.id}-${index}`} className="product-card-wrapper">
-                  <div className="product-card position-relative bg-white">
+                <div key={product.id} className="shop-slider-item">
+                  <div className="shop-product-card h-100 bg-white rounded-3 overflow-hidden d-flex flex-column">
 
-                    {/* Tag Badge */}
-                    {product.tag && (
-                      <span className="product-tag-badge position-absolute">{product.tag}</span>
-                    )}
+                    {/* Top Image Container */}
+                    <div className="shop-product-img-box position-relative overflow-hidden">
+                      {/* Tag Badge */}
+                      <span className="shop-product-tag position-absolute top-0 start-0 m-2">
+                        {productTag}
+                      </span>
 
-                    {/* Wishlist Button */}
-                    <button
-                      type="button"
-                      className={`wishlist-toggle-btn position-absolute d-flex align-items-center justify-content-center ${isWishlisted ? 'active' : ''}`}
-                      onClick={(e) => toggleWishlist(e, product.id)}
-                      aria-label="Add to Wishlist"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill={isWishlisted ? '#c92a2a' : 'currentColor'}
-                        viewBox="0 0 16 16"
+                      {/* Wishlist Button */}
+                      <button
+                        type="button"
+                        className={`shop-wishlist-btn position-absolute top-0 end-0 m-2 border-0 d-flex align-items-center justify-content-center ${isWishlisted ? 'active' : ''}`}
+                        onClick={(e) => toggleWishlist(e, product.id)}
+                        aria-label="Add to Wishlist"
                       >
-                        {isWishlisted ? (
-                          <path fillRule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
-                        ) : (
-                          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01z" />
-                        )}
-                      </svg>
-                    </button>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="15"
+                          height="15"
+                          fill={isWishlisted ? '#c92a2a' : 'currentColor'}
+                          viewBox="0 0 16 16"
+                        >
+                          {isWishlisted ? (
+                            <path fillRule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                          ) : (
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01z" />
+                          )}
+                        </svg>
+                      </button>
 
-                    {/* Product Image Link */}
-                    <Link to={`/product/${product.id}`} className="product-card-link text-decoration-none">
-                      <div className="product-img-wrapper overflow-hidden">
+                      {/* Image Link */}
+                      <Link to={`/product/${product.id}`} className="d-block w-100 h-100">
                         <img
                           src={pImg}
                           alt={product.name}
-                          className="product-img w-100"
+                          className="shop-product-img w-100 h-100 object-fit-cover"
                         />
-                      </div>
-                    </Link>
-
-                    {/* Meta Details & Request Price Action */}
-                    <div className="product-details mt-3 text-center px-2">
-                      <Link to={`/product/${product.id}`} className="text-decoration-none color-dark">
-                        <h4 className="product-name">{product.name}</h4>
                       </Link>
-                      <p className="product-price-on-request">{product.priceText || 'Price on Request'}</p>
-                      
+                    </div>
+
+                    {/* Bottom Details Section */}
+                    <div className="shop-product-details p-3 text-center d-flex flex-column justify-content-between flex-grow-1">
+                      <div>
+                        <Link to={`/product/${product.id}`} className="text-decoration-none color-dark">
+                          <h3 className="shop-product-title">{product.name}</h3>
+                        </Link>
+                        <p className="shop-product-price mt-1 mb-3">{product.priceText || 'Price on Request'}</p>
+                      </div>
+
                       <button
                         type="button"
                         onClick={() => openInquiryModal(product)}
-                        className="btn-request-price-card w-100 mt-2"
+                        className="btn shop-request-btn w-100 text-uppercase"
                       >
-                        Request Price
+                        REQUEST PRICE
                       </button>
                     </div>
 
@@ -150,11 +168,25 @@ const ShopStyles = () => {
               );
             })}
           </div>
+
+          {/* Right Arrow Button */}
+          <button
+            type="button"
+            className="slider-arrow-btn slider-arrow-next d-flex align-items-center justify-content-center border-0"
+            onClick={scrollRight}
+            aria-label="Next Products"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+            </svg>
+          </button>
+
         </div>
 
-        <div className="text-center mt-5">
-          <Link to="/collections" className="btn btn-outline-dark px-4 py-2.5 rounded-pill font-heading">
-            View Complete Boutique Catalog →
+        {/* View Complete Boutique Catalog Button */}
+        <div className="text-center mt-4">
+          <Link to="/collections" className="btn shop-catalog-btn">
+            VIEW COMPLETE BOUTIQUE CATALOG &rarr;
           </Link>
         </div>
 

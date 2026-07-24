@@ -12,7 +12,7 @@ export const PRODUCTS_DATA = [
     categoryName: 'Sarees',
     sku: 'WOWO-SAR-001',
     tag: 'Bespoke',
-    priceText: 'Price on Request',
+    priceText: '7999/-',
     images: [imageSaree, imageLehenga, imageFusion],
     shortDesc: 'Pure hand-loomed mulberry silk Kanjeevaram saree embellished with authentic gold zari weaves and royal peacock motifs.',
     description: `The Ikshita Kanjeevaram Saree embodies timeless royal elegance. Handcrafted over 180 hours by master weavers in Kanchipuram, this saree features pure mulberry silk woven with pure zari threadwork. Designed for brides and grand festive celebrations, it drapes with regal weight and effortless grace.`,
