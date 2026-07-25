@@ -17,10 +17,10 @@ const NewsletterSection = () => {
       <div className="container px-3 px-lg-4">
         <div className="newsletter-box text-center p-4 p-md-5 rounded-4 position-relative overflow-hidden">
           <div className="newsletter-bg-decor"></div>
-          
+
           <div className="position-relative z-1 max-w-650 mx-auto">
             <span className="newsletter-section-tag">JOIN THE WOWO CIRCLE</span>
-            <h2 className="newsletter-section-title mt-2 mb-3">
+            <h2 className="newsletter-section-title fw-semibold mt-2 mb-3">
               Be First to Access Private Exhibition Invites & New Arrivals
             </h2>
             <p className="newsletter-section-desc mb-4">

@@ -39,9 +39,7 @@ const NewsletterPopup = () => {
         {/* Promotional Image Column */}
         <div className="newsletter-popup-img-col w-100 w-md-50 position-relative overflow-hidden">
           <img src={heroImage} alt="WOWO Circle Exclusive Offer" className="newsletter-popup-img w-100 h-100" />
-          <div className="newsletter-popup-img-overlay d-flex align-items-end p-4">
 
-          </div>
         </div>
 
         {/* Content & Form Column */}
@@ -49,7 +47,7 @@ const NewsletterPopup = () => {
           {!subscribed ? (
             <div>
               <span className="newsletter-popup-sub">VIP BOUTIQUE INVITATION</span>
-              <h3 className="newsletter-popup-title mt-1 mb-2">Unlock Exclusive Passes to Monthly Exhibitions</h3>
+              <h3 className="newsletter-popup-title fw-semibold mt-1 mb-2">Unlock Exclusive Passes to Monthly Exhibitions</h3>
               <p className="newsletter-popup-desc mb-4">
                 Join the WOWO Studio Circle to receive private preview passes for our monthly luxury exhibitions, new couture releases, and complimentary bridal styling invitations.
               </p>

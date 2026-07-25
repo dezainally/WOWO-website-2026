@@ -4,13 +4,14 @@ import HeroSection from '../components/HeroSection';
 import CuratedSeason from '../components/CuratedSeason';
 import ShopStyles from '../components/ShopStyles';
 import VideoSection from '../components/VideoSection';
+import Testimonials from '../components/Testimonials';
 import NewsletterSection from '../components/NewsletterSection';
 import { UPCOMING_EXHIBITIONS } from '../data/exhibitionsData';
 import { useInquiry } from '../context/InquiryContext';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
-  const { openInquiryModal, openWhatsApp } = useInquiry();
+  const { openInquiryModal } = useInquiry();
   const nextExhibition = UPCOMING_EXHIBITIONS[0];
 
   return (
@@ -36,7 +37,7 @@ const HomePage = () => {
                 <span className="badge bg-gold px-3 py-2 text-uppercase letter-spacing-2 mb-3">
                   Monthly Luxury Pop-ups
                 </span>
-                <h2 className="exhibition-spotlight-title text-white mb-3">
+                <h2 className="exhibition-spotlight-title fw-semibold text-white mb-3">
                   Experience WOWO Studio’s Exclusive Boutique Exhibitions
                 </h2>
                 <p className="exhibition-spotlight-text text-light opacity-90 mb-4">
@@ -76,7 +77,7 @@ const HomePage = () => {
         <div className="container px-3 px-lg-4">
           <div className="text-center mb-5 max-w-700 mx-auto">
             <span className="subtitle-gold">THE BOUTIQUE EXPERIENCE</span>
-            <h2 className="font-heading fs-2 mt-1">Why High-Fashion Patrons Choose WOWO</h2>
+            <h2 className="font-heading fw-semibold fs-2 mt-1">Why High-Fashion Patrons Choose WOWO</h2>
           </div>
 
           <div className="row g-4">
@@ -115,6 +116,9 @@ const HomePage = () => {
 
         </div>
       </section>
+
+      {/* Patron Stories & Reviews Section */}
+      <Testimonials />
 
       {/* Pre-footer Newsletter Section */}
       <NewsletterSection />

@@ -11,7 +11,7 @@ const Footer = () => {
     <footer className="footer-section bg-dark text-white pt-5 pb-4">
       <div className="container px-3 px-lg-4">
         <div className="row g-4 g-lg-5 pb-5 border-bottom border-secondary border-opacity-25">
-          
+
           {/* Column 1: Brand & About Us */}
           <div className="col-lg-4 col-md-6">
             <div className="footer-brand-block">
@@ -47,6 +47,7 @@ const Footer = () => {
             <ul className="list-unstyled footer-links">
               <li><Link to="/">Home</Link></li>
               <li><Link to="/collections">Browse Catalog</Link></li>
+              <li><Link to="/past-works">Celebrity Works (Since 2020)</Link></li>
               <li><Link to="/exhibitions">Monthly Exhibitions</Link></li>
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/contact">Contact & Location</Link></li>
@@ -72,8 +73,7 @@ const Footer = () => {
             <div className="footer-contact-info">
               <p className="mb-2">
                 <strong className="text-gold">Boutique Studio:</strong><br />
-                Road No. 10, Jubilee Hills,<br />
-                Hyderabad, Telangana - 500033
+                2-3-1/2, beside SR Digi School, Shivapuri Colony, Manikonda, Hyderabad, Telangana 500089
               </p>
               <p className="mb-2">
                 <strong className="text-gold">Phone / Inquiry:</strong><br />

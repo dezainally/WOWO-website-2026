@@ -30,14 +30,14 @@ const ExhibitionPage = () => {
 
   return (
     <div className="exhibition-page-wrapper bg-light-sand py-4">
-      
+
       {/* Hero Banner Section */}
       <div className="exhibition-hero-banner text-center py-5 bg-dark text-white position-relative">
         <div className="container px-3 px-lg-4 position-relative z-1">
           <span className="badge bg-gold px-3 py-2 text-uppercase letter-spacing-3 mb-3">
             Monthly Boutique Trunk Shows
           </span>
-          <h1 className="exhibition-hero-title mt-1 mb-3">
+          <h1 className="exhibition-hero-title fw-semibold mt-1 mb-3">
             WOWO Studio Luxury Exhibitions
           </h1>
           <p className="exhibition-hero-desc text-light opacity-90 max-w-800 mx-auto mb-4">
@@ -56,7 +56,7 @@ const ExhibitionPage = () => {
       </div>
 
       <div className="container px-3 px-lg-4 py-5">
-        
+
         {/* Past Highlights Banner Stats */}
         <div className="row g-4 mb-5">
           {PAST_HIGHLIGHTS.map((stat, idx) => (
@@ -74,7 +74,7 @@ const ExhibitionPage = () => {
         <section id="schedule" className="mb-5 pt-3">
           <div className="text-center mb-5 max-w-700 mx-auto">
             <span className="subtitle-gold">MONTHLY POP-UP DATES</span>
-            <h2 className="font-heading fs-2 mt-1">Upcoming Exhibition Schedule</h2>
+            <h2 className="font-heading fw-semibold fs-2 mt-1">Upcoming Exhibition Schedule</h2>
             <p className="small text-muted">
               Book your private appointment or walk in during exhibition hours for bespoke bridal consultations.
             </p>
@@ -127,7 +127,7 @@ const ExhibitionPage = () => {
         <section className="mb-5 py-4">
           <div className="text-center mb-5 max-w-700 mx-auto">
             <span className="subtitle-gold">EVENT HIGHLIGHTS</span>
-            <h2 className="font-heading fs-2 mt-1">Glimpses From Previous Exhibitions</h2>
+            <h2 className="font-heading fw-semibold fs-2 mt-1">Glimpses From Previous Exhibitions</h2>
             <p className="small text-muted">A look back at our recent luxury trunk shows and happy brides across India.</p>
           </div>
 
@@ -149,10 +149,10 @@ const ExhibitionPage = () => {
         {/* Section 3: VIP Exhibition Registration / Contact Form */}
         <section id="rsvp" className="exhibition-rsvp-section p-4 p-md-5 bg-white rounded-4 border shadow-sm my-5">
           <div className="row align-items-center g-4 g-lg-5">
-            
+
             <div className="col-lg-5">
               <span className="subtitle-gold">VIP ACCESS REGISTRATION</span>
-              <h2 className="font-heading fs-2 mt-1 mb-3">Reserve Your Invitation Pass</h2>
+              <h2 className="font-heading fw-semibold fs-2 mt-1 mb-3">Reserve Your Invitation Pass</h2>
               <p className="text-muted small line-height-16 mb-4">
                 Registering for our monthly boutique exhibitions guarantees priority entry, private 1-on-1 stylist sessions with Samatha Chowdary, and complimentary high-tea.
               </p>
@@ -240,7 +240,7 @@ const ExhibitionPage = () => {
               ) : (
                 <div className="text-center p-4 bg-white rounded-3 border">
                   <div className="success-icon-badge mx-auto mb-3">✓</div>
-                  <h3 className="font-heading">Registration Confirmed!</h3>
+                  <h3 className="font-heading fw-semibold">Registration Confirmed!</h3>
                   <p className="small text-muted mt-2">
                     Thank you, <strong>{rsvpData.name}</strong>. Your VIP Pass for the <strong>{rsvpData.city} Exhibition</strong> has been reserved. Our concierge will send your digital barcode pass to <strong>{rsvpData.phone}</strong>.
                   </p>

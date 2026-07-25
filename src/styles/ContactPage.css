@@ -31,3 +31,23 @@
   justify-content: center;
   font-size: 1.1rem;
 }
+
+.contact-social-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: rgba(232, 226, 213, 0.4);
+  color: #3d4928;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  border: 1px solid rgba(184, 152, 81, 0.2);
+}
+
+.contact-social-icon:hover {
+  background-color: #3d4928;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(61, 73, 40, 0.2);
+}

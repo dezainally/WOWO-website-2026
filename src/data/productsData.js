@@ -152,7 +152,7 @@ export const PRODUCTS_DATA = [
 ];
 
 export const CATEGORIES_DATA = [
-  { id: 'all', name: 'All Collections', count: 8 },
+  { id: 'all', name: 'All', count: 8 },
   { id: 'sarees', name: 'Sarees & Half Sarees', count: 3 },
   { id: 'lehengas', name: 'Bridal Lehengas', count: 2 },
   { id: 'fusion', name: 'Fusion Wear', count: 1 },

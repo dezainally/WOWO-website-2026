@@ -56,7 +56,7 @@ const ShopStyles = () => {
             <span className="subtitle-gold">CURATED STYLES</span>
           </div>
 
-          <h2 className="shop-styles-title">EXPLORE OUR SIGNATURE COUTURE</h2>
+          <h2 className="shop-styles-title fw-semibold">EXPLORE OUR SIGNATURE COUTURE</h2>
 
           {/* Golden Diamond Divider Line */}
           <div className="shop-styles-divider mx-auto my-3">
@@ -97,10 +97,9 @@ const ShopStyles = () => {
 
           {/* Slider Scroll Track */}
           <div className="shop-slider-track" ref={sliderRef}>
-            {filteredProducts.map((product, index) => {
+            {filteredProducts.map((product) => {
               const isWishlisted = !!wishlist[product.id];
               const pImg = product.images ? product.images[0] : product.image;
-              const productTag = product.tag || (index % 5 === 0 ? 'EDIT' : index % 5 === 1 ? 'BESPOKE' : index % 5 === 2 ? 'SIGNATURE' : index % 5 === 3 ? 'EXCLUSIVE' : 'CLASSIC');
 
               return (
                 <div key={product.id} className="shop-slider-item">
@@ -108,11 +107,6 @@ const ShopStyles = () => {
 
                     {/* Top Image Container */}
                     <div className="shop-product-img-box position-relative overflow-hidden">
-                      {/* Tag Badge */}
-                      <span className="shop-product-tag position-absolute top-0 start-0 m-2">
-                        {productTag}
-                      </span>
-
                       {/* Wishlist Button */}
                       <button
                         type="button"
@@ -149,7 +143,7 @@ const ShopStyles = () => {
                     <div className="shop-product-details p-3 text-center d-flex flex-column justify-content-between flex-grow-1">
                       <div>
                         <Link to={`/product/${product.id}`} className="text-decoration-none color-dark">
-                          <h3 className="shop-product-title">{product.name}</h3>
+                          <h3 className="shop-product-title fw-semibold">{product.name}</h3>
                         </Link>
                         <p className="shop-product-price mt-1 mb-3">{product.priceText || 'Price on Request'}</p>
                       </div>

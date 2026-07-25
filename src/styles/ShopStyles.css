@@ -215,20 +215,6 @@
   transform: scale(1.05);
 }
 
-/* Tag Badge */
-.shop-product-tag {
-  background-color: #3d4928;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  padding: 4px 10px;
-  border-radius: 3px;
-  text-transform: uppercase;
-  z-index: 2;
-}
-
 /* Wishlist Button */
 .shop-wishlist-btn {
   width: 32px;

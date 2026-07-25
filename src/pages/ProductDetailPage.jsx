@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PRODUCTS_DATA } from '../data/productsData';
 import { useInquiry } from '../context/InquiryContext';
@@ -15,12 +15,57 @@ const ProductDetailPage = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('description');
 
+  // Fullscreen Lightbox & Zoom state
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [zoomScale, setZoomScale] = useState(1);
+
   const relatedProducts = PRODUCTS_DATA.filter((p) => p.id !== product.id).slice(0, 4);
+
+  const handleZoomIn = () => {
+    setZoomScale((prev) => Math.min(prev + 0.5, 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoomScale((prev) => Math.max(prev - 0.5, 1));
+  };
+
+  const handleResetZoom = () => {
+    setZoomScale(1);
+  };
+
+  const handleNextImage = (e) => {
+    if (e) e.stopPropagation();
+    setActiveImageIndex((prev) => (prev === product.images.length - 1 ? 0 : prev + 1));
+    setZoomScale(1);
+  };
+
+  const handlePrevImage = (e) => {
+    if (e) e.stopPropagation();
+    setActiveImageIndex((prev) => (prev === 0 ? product.images.length - 1 : prev - 1));
+    setZoomScale(1);
+  };
+
+  // Keyboard navigation & Escape key support
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isLightboxOpen) return;
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+        setZoomScale(1);
+      } else if (e.key === 'ArrowRight') {
+        handleNextImage();
+      } else if (e.key === 'ArrowLeft') {
+        handlePrevImage();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, product.images.length]);
 
   return (
     <div className="product-detail-page bg-light-sand py-4">
       <div className="container px-3 px-lg-4">
-        
+
         {/* Breadcrumb Navigation */}
         <nav aria-label="breadcrumb" className="mb-4">
           <ol className="breadcrumb small font-inter">
@@ -34,20 +79,24 @@ const ProductDetailPage = () => {
         {/* Main Product Stage */}
         <div className="bg-white rounded-4 border p-4 p-lg-5 shadow-sm mb-5">
           <div className="row g-4 g-lg-5">
-            
+
             {/* Left Column: Image Gallery & Thumbnails */}
             <div className="col-lg-6">
               <div className="product-gallery-container position-relative">
-                {/* Main Large Display Image */}
-                <div className="main-image-stage rounded-3 overflow-hidden border mb-3 position-relative">
-                  {product.tag && (
-                    <span className="pdp-tag-badge position-absolute">{product.tag}</span>
-                  )}
+                {/* Main Large Display Image Stage (Clickable for Fullscreen & Zoom) */}
+                <div
+                  className="main-image-stage rounded-3 overflow-hidden border mb-3 position-relative"
+                  onClick={() => setIsLightboxOpen(true)}
+                  title="Click for Fullscreen View & Zoom"
+                >
                   <img
                     src={product.images[activeImageIndex] || product.images[0]}
                     alt={product.name}
                     className="pdp-main-img w-100"
                   />
+                  <span className="zoom-hint-badge position-absolute">
+                    🔍 Click to Fullscreen & Zoom
+                  </span>
                 </div>
 
                 {/* Thumbnail Selector Strip */}
@@ -70,9 +119,9 @@ const ProductDetailPage = () => {
             <div className="col-lg-6 d-flex flex-column">
               <div className="pdp-header border-bottom pb-3 mb-4">
                 <span className="pdp-category-tag text-uppercase">{product.categoryName} • SKU: {product.sku}</span>
-                <h1 className="pdp-title mt-1 mb-2">{product.name}</h1>
+                <h1 className="pdp-title fw-semibold mt-1 mb-2">{product.name}</h1>
                 <p className="pdp-short-desc text-muted mb-3">{product.shortDesc}</p>
-                
+
                 <div className="pdp-price-badge-box p-3 rounded-3 bg-light-sand border d-flex align-items-center justify-content-between">
                   <div>
                     <span className="small text-muted d-block">Boutique Pricing:</span>
@@ -92,7 +141,7 @@ const ProductDetailPage = () => {
                   className="btn-pdp-request-price w-100 py-3 mb-3 d-flex align-items-center justify-content-center gap-2"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414A1 1 0 0 0 3.707 12.293L1 15.586A1 1 0 0 1 0 14.828V2zm2-1a1 1 0 0 0-1 1v12.828l2.293-2.293A2 2 0 0 1 4.707 12H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z"/>
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414A1 1 0 0 0 3.707 12.293L1 15.586A1 1 0 0 1 0 14.828V2zm2-1a1 1 0 0 0-1 1v12.828l2.293-2.293A2 2 0 0 1 4.707 12H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
                   </svg>
                   REQUEST PRICE & CUSTOM FITTING
                 </button>
@@ -120,7 +169,7 @@ const ProductDetailPage = () => {
               </div>
 
               {/* Information Accordion Tabs */}
-              <div className="pdp-tabs-container mt-auto">
+              <div className="pdp-tabs-container">
                 <div className="d-flex border-bottom gap-4 mb-3">
                   <button
                     type="button"
@@ -184,7 +233,7 @@ const ProductDetailPage = () => {
         {/* Related Products Carousel Section */}
         <div className="related-products-section my-5">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h3 className="font-heading fs-3">You May Also Admire</h3>
+            <h3 className="font-heading fw-semibold fs-3">You May Also Admire</h3>
             <Link to="/collections" className="text-gold text-decoration-none small fw-semibold">
               View All Collections →
             </Link>
@@ -215,6 +264,95 @@ const ProductDetailPage = () => {
         </div>
 
       </div>
+
+      {/* Fullscreen Lightbox & Interactive Zoom Modal */}
+      {isLightboxOpen && (
+        <div
+          className="pdp-lightbox-overlay"
+          onClick={() => { setIsLightboxOpen(false); setZoomScale(1); }}
+        >
+          {/* Top Control Toolbar (Zoom & Close Buttons) */}
+          <div className="pdp-lightbox-toolbar" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="pdp-lightbox-btn"
+              onClick={handleZoomOut}
+              disabled={zoomScale <= 1}
+              aria-label="Zoom Out"
+              title="Zoom Out"
+            >
+              −
+            </button>
+            <span className="pdp-lightbox-zoom-level">{Math.round(zoomScale * 100)}%</span>
+            <button
+              type="button"
+              className="pdp-lightbox-btn"
+              onClick={handleZoomIn}
+              disabled={zoomScale >= 3}
+              aria-label="Zoom In"
+              title="Zoom In"
+            >
+              +
+            </button>
+            <button
+              type="button"
+              className="pdp-lightbox-btn"
+              onClick={handleResetZoom}
+              aria-label="Reset Zoom"
+              title="Reset Zoom"
+            >
+              ↺
+            </button>
+            <button
+              type="button"
+              className="pdp-lightbox-btn"
+              onClick={() => { setIsLightboxOpen(false); setZoomScale(1); }}
+              aria-label="Close Lightbox"
+              title="Close (Esc)"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Previous Image Arrow */}
+          {product.images.length > 1 && (
+            <button
+              type="button"
+              className="pdp-lightbox-arrow pdp-lightbox-arrow-prev border-0"
+              onClick={handlePrevImage}
+              aria-label="Previous Image"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+              </svg>
+            </button>
+          )}
+
+          {/* Zoomable Main Image Stage */}
+          <div className="pdp-lightbox-img-wrapper" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={product.images[activeImageIndex] || product.images[0]}
+              alt={product.name}
+              className="pdp-lightbox-img"
+              style={{ transform: `scale(${zoomScale})` }}
+            />
+          </div>
+
+          {/* Next Image Arrow */}
+          {product.images.length > 1 && (
+            <button
+              type="button"
+              className="pdp-lightbox-arrow pdp-lightbox-arrow-next border-0"
+              onClick={handleNextImage}
+              aria-label="Next Image"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+              </svg>
+            </button>
+          )}
+        </div>
+      )}
 
       <NewsletterSection />
     </div>

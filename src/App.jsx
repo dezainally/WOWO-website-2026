@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage.jsx';
 import CollectionsPage from './pages/CollectionsPage.jsx';
 import ProductDetailPage from './pages/ProductDetailPage.jsx';
 import ExhibitionPage from './pages/ExhibitionPage.jsx';
+import PastWorksPage from './pages/PastWorksPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 
@@ -38,6 +39,7 @@ function App() {
               <Route path="/collections" element={<CollectionsPage />} />
               <Route path="/product/:id" element={<ProductDetailPage />} />
               <Route path="/exhibitions" element={<ExhibitionPage />} />
+              <Route path="/past-works" element={<PastWorksPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
             </Routes>

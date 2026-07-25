@@ -35,7 +35,7 @@ const VideoSection = () => {
           <div className="col-lg-8">
             <div className="video-section-content">
               <span className="video-section-subtitle">THE WOWO HERITAGE</span>
-              <h2 className="video-section-title mt-2 mb-3">
+              <h2 className="video-section-title fw-semibold mt-2 mb-3">
                 Crafted with Elegance,<br className="d-none d-md-block" /> Designed for Every Occasion
               </h2>
               <p className="video-section-description mb-4">

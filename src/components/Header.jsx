@@ -60,6 +60,11 @@ const Header = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
+                <NavLink className={({ isActive }) => `nav-link nav-link-custom ${isActive ? 'active' : ''}`} to="/past-works">
+                  Works
+                </NavLink>
+              </li>
+              <li className="nav-item">
                 <NavLink className={({ isActive }) => `nav-link nav-link-custom ${isActive ? 'active' : ''}`} to="/exhibitions">
                   Exhibitions <span className="badge bg-gold ms-1">Monthly</span>
                 </NavLink>

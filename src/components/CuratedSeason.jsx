@@ -101,7 +101,7 @@ const CuratedSeason = () => {
             </svg>
           </div>
 
-          <h2 className="curated-title">CURATED THIS SEASON</h2>
+          <h2 className="curated-title fw-semibold">CURATED THIS SEASON</h2>
 
           {/* Golden accent line below title */}
           <div className="curated-title-line mx-auto my-3"></div>
@@ -140,7 +140,7 @@ const CuratedSeason = () => {
 
                   {/* Content Overlay */}
                   <div className="curated-card-content p-4 text-center d-flex flex-column align-items-center justify-content-end w-100 h-100 position-absolute top-0 start-0">
-                    <h3 className="curated-card-label">{item.name}</h3>
+                    <h3 className="curated-card-label fw-semibold">{item.name}</h3>
 
                     {/* Small Accent Line with Diamond */}
                     <div className="curated-card-divider my-2">

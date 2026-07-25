@@ -35,11 +35,14 @@
   border: 1px solid #e5dfd5;
   color: #57534e;
   font-family: 'Outfit', 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   padding: 8px 18px;
   border-radius: 20px;
   transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .category-pill-btn:hover,
