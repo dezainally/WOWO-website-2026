@@ -1,7 +1,7 @@
-const API_BASE = 'http://localhost:5050/api';
+const API_BASE = 'https://wowo-backend.onrender.com/api';
 
 /**
- * Public Website API Client
+ * Public Website API Client (Connected to live Render Backend)
  */
 export const fetchPublicProducts = async (category = 'all', search = '') => {
   try {
@@ -12,7 +12,7 @@ export const fetchPublicProducts = async (category = 'all', search = '') => {
   } catch (error) {
     console.warn('Backend API offline, using fallback dataset:', error);
   }
-  return null; // Signals fallback to local dataset
+  return null;
 };
 
 export const fetchPublicExhibitions = async () => {

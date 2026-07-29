@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Create Axios Instance targeting Express API (Port 5050 locally or api.wowostudio.com in production)
+// Live Production Render API Endpoint
 const API = axios.create({
-  baseURL: 'http://localhost:5050/api',
+  baseURL: 'https://wowo-backend.onrender.com/api',
   headers: {
     'Content-Type': 'application/json'
   }
