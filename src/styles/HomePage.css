@@ -11,6 +11,10 @@
   box-shadow: 0 20px 45px rgba(28, 25, 23, 0.2);
 }
 
+.cinzel-font {
+  font-family: 'Cinzel', 'Playfair Display', serif;
+}
+
 .exhibition-spotlight-title {
   font-family: 'Cinzel', 'Playfair Display', serif;
   font-size: 2rem;

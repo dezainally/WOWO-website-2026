@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useInquiry } from '../context/InquiryContext';
-import logoImage from '../assets/wowologo.png';
+import logoImage from '../assets/wowo-logo-website.avif';
 import '../styles/Footer.css';
 
 const Footer = () => {
@@ -47,7 +47,7 @@ const Footer = () => {
             <ul className="list-unstyled footer-links">
               <li><Link to="/">Home</Link></li>
               <li><Link to="/collections">Browse Catalog</Link></li>
-              <li><Link to="/past-works">Celebrity Works (Since 2020)</Link></li>
+              <li><Link to="/past-works">Works</Link></li>
               <li><Link to="/exhibitions">Monthly Exhibitions</Link></li>
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/contact">Contact & Location</Link></li>

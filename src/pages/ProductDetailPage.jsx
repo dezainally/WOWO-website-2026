@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import ShinyText from '../components/ShinyText';
 import { PRODUCTS_DATA } from '../data/productsData';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
@@ -94,8 +95,14 @@ const ProductDetailPage = () => {
                     alt={product.name}
                     className="pdp-main-img w-100"
                   />
-                  <span className="zoom-hint-badge position-absolute">
-                    🔍 Click to Fullscreen & Zoom
+                  <span className="zoom-hint-badge position-absolute d-flex align-items-center gap-2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <polyline points="9 21 3 21 3 15"></polyline>
+                      <line x1="21" y1="3" x2="14" y2="10"></line>
+                      <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>
+                    <span>Click to view fullscreen</span>
                   </span>
                 </div>
 
@@ -122,14 +129,29 @@ const ProductDetailPage = () => {
                 <h1 className="pdp-title fw-semibold mt-1 mb-2">{product.name}</h1>
                 <p className="pdp-short-desc text-muted mb-3">{product.shortDesc}</p>
 
-                <div className="pdp-price-badge-box p-3 rounded-3 bg-light-sand border d-flex align-items-center justify-content-between">
-                  <div>
-                    <span className="small text-muted d-block">Boutique Pricing:</span>
-                    <strong className="fs-5 text-gold font-heading">{product.priceText}</strong>
+                {/* Redesigned Pricing & Made-to-Order Stock Box */}
+                <div className="pdp-price-badge-box p-3.5 p-md-4 rounded-4 border d-flex align-items-center justify-content-between mb-2">
+                  <div className="pdp-pricing-left">
+                    <span className="pdp-pricing-label d-block">BOUTIQUE PRICING</span>
+                    <h3 className="pdp-pricing-value font-heading mt-1 mb-0">
+                      PRICE ON<br />REQUEST
+                    </h3>
                   </div>
-                  <span className="stock-status-badge">
-                    In Stock • Made-to-Order Fitting Available
-                  </span>
+
+                  <div className="pdp-stock-badge-box d-flex align-items-start gap-2.5">
+                    <div className="pdp-stock-check-icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="pdp-stock-title">In Stock</div>
+                      <div className="pdp-stock-subtitle">
+                        Made-to-Order Fitting<br />Available
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -138,22 +160,31 @@ const ProductDetailPage = () => {
                 <button
                   type="button"
                   onClick={() => openInquiryModal(product)}
-                  className="btn-pdp-request-price w-100 py-3 mb-3 d-flex align-items-center justify-content-center gap-2"
+                  className="btn-pdp-request-price w-100 py-3 mb-3 d-flex align-items-center justify-content-center gap-2.5"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414A1 1 0 0 0 3.707 12.293L1 15.586A1 1 0 0 1 0 14.828V2zm2-1a1 1 0 0 0-1 1v12.828l2.293-2.293A2 2 0 0 1 4.707 12H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <path d="M8 14h.01"></path>
+                    <path d="M12 14h.01"></path>
+                    <path d="M16 14h.01"></path>
                   </svg>
-                  REQUEST PRICE & CUSTOM FITTING
+                  <span>REQUEST PRICE & CUSTOM FITTING</span>
                 </button>
 
-                <div className="row g-2">
+                <div className="row g-3">
                   <div className="col-sm-6">
                     <button
                       type="button"
                       onClick={() => openWhatsApp(product.name)}
                       className="btn-pdp-whatsapp w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
                     >
-                      💬 WhatsApp Inquiry
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                      <span>WHATSAPP INQUIRY</span>
                     </button>
                   </div>
                   <div className="col-sm-6">
@@ -162,7 +193,10 @@ const ProductDetailPage = () => {
                       onClick={callNow}
                       className="btn-pdp-call w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
                     >
-                      📞 Call Stylist
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                      <span>CALL STYLIST</span>
                     </button>
                   </div>
                 </div>
@@ -233,7 +267,9 @@ const ProductDetailPage = () => {
         {/* Related Products Carousel Section */}
         <div className="related-products-section my-5">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h3 className="font-heading fw-semibold fs-3">You May Also Admire</h3>
+            <h3 className="font-heading fw-semibold fs-3">
+              <ShinyText text="You May Also Admire" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+            </h3>
             <Link to="/collections" className="text-gold text-decoration-none small fw-semibold">
               View All Collections →
             </Link>
@@ -242,21 +278,50 @@ const ProductDetailPage = () => {
           <div className="row g-4">
             {relatedProducts.map((rel) => (
               <div key={rel.id} className="col-lg-3 col-sm-6">
-                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100">
-                  <Link to={`/product/${rel.id}`} className="catalog-img-wrapper d-block overflow-hidden">
-                    <img src={rel.images[0]} alt={rel.name} className="catalog-product-img w-100" />
+                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100 position-relative d-flex flex-column">
+                  
+                  {/* Image Link */}
+                  <Link to={`/product/${rel.id}`} className="catalog-img-wrapper overflow-hidden d-block">
+                    <img
+                      src={rel.images[0]}
+                      alt={rel.name}
+                      className="catalog-product-img w-100"
+                    />
                   </Link>
-                  <div className="p-3">
-                    <h4 className="catalog-product-name fs-6 mb-1">{rel.name}</h4>
-                    <p className="price-on-request-badge mb-2">{rel.priceText}</p>
-                    <button
-                      type="button"
-                      onClick={() => openInquiryModal(rel)}
-                      className="btn-request-price-catalog w-100"
-                    >
-                      Request Price
-                    </button>
+
+                  {/* Body Content */}
+                  <div className="p-3 d-flex flex-column flex-grow-1">
+                    <span className="catalog-sku-text mb-1">SKU: {rel.sku}</span>
+                    <Link to={`/product/${rel.id}`} className="text-decoration-none text-dark">
+                      <h3 className="catalog-product-name fw-semibold mb-1">{rel.name}</h3>
+                    </Link>
+                    <p className="catalog-fabric-text mb-2">{rel.fabric}</p>
+
+                    <div className="mt-auto pt-3 border-top">
+                      <div className="d-flex align-items-center justify-content-between mb-2">
+                        <span className="price-on-request-badge">{rel.priceText}</span>
+                      </div>
+
+                      <div className="d-grid gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openInquiryModal(rel)}
+                          className="btn-request-price-catalog w-100"
+                        >
+                          Request Price & Details
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => openWhatsApp(rel.name)}
+                          className="btn-whatsapp-catalog w-100 d-flex align-items-center justify-content-center gap-1.5"
+                        >
+                          💬 Inquire on WhatsApp
+                        </button>
+                      </div>
+                    </div>
+
                   </div>
+
                 </div>
               </div>
             ))}

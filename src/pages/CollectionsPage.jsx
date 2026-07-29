@@ -1,7 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import ShinyText from '../components/ShinyText';
 import { PRODUCTS_DATA, CATEGORIES_DATA } from '../data/productsData';
 import { useInquiry } from '../context/InquiryContext';
+import CategoryIcon from '../components/CategoryIcon';
+import { animateCardsGSAP } from '../utils/useGSAPIntro';
 import NewsletterSection from '../components/NewsletterSection';
 import '../styles/CollectionsPage.css';
 
@@ -21,6 +24,9 @@ const CollectionsPage = () => {
     } else {
       setSearchParams({ cat: catId });
     }
+    setTimeout(() => {
+      animateCardsGSAP('.catalog-product-card');
+    }, 50);
   };
 
   const filteredProducts = useMemo(() => {
@@ -33,68 +39,15 @@ const CollectionsPage = () => {
     });
   }, [selectedCategory, searchQuery]);
 
-  const getCategoryIcon = (catId) => {
-    switch (catId) {
-      case 'all':
-        return (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-          </svg>
-        );
-      case 'sarees':
-        return (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
-        );
-      case 'lehengas':
-        return (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z" />
-            <path d="M5 20h14" />
-          </svg>
-        );
-      case 'fusion':
-        return (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-        );
-      case 'sherwanis':
-        return (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
-          </svg>
-        );
-      case 'dupattas':
-        return (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-          </svg>
-        );
-      case 'gowns':
-        return (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 3h6l2 4-4 2 2 12H9l2-12-4-2z" />
-            <line x1="8" y1="21" x2="16" y2="21" />
-          </svg>
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="collections-page-wrapper bg-light-sand py-4">
       {/* Page Header */}
       <div className="catalog-header-banner text-center py-5 bg-dark text-white position-relative">
         <div className="container px-3">
           <span className="subtitle-gold letter-spacing-3">EXCLUSIVE LUXURY CATALOG</span>
-          <h1 className="catalog-header-title fw-semibold mt-2 mb-3">WOWO Boutique Collections</h1>
+          <h1 className="catalog-header-title fw-semibold mt-2 mb-3">
+            <ShinyText text="WOWO Boutique Collections" color="#ffffff" shineColor="#f3d798" speed={3.5} />
+          </h1>
           <p className="catalog-header-desc text-light opacity-80 max-w-700 mx-auto mb-0">
             Browse our latest bridal lehengas, pure silk Kanjeevarams, handloom sarees, and fusion couture. Select any piece to request custom sizing, color choices, and private fitting prices.
           </p>
@@ -131,7 +84,7 @@ const CollectionsPage = () => {
         </div>
 
         {/* Category Pills Bar (Centered with Icons) */}
-        <div className="d-flex align-items-center justify-content-center flex-wrap gap-2 mb-5 pb-2 border-bottom">
+        <div className="d-flex align-items-center justify-content-center flex-wrap gap-2 gap-md-3 mb-5 pb-2 border-bottom">
           {CATEGORIES_DATA.map((cat) => (
             <button
               key={cat.id}
@@ -139,7 +92,7 @@ const CollectionsPage = () => {
               className={`category-pill-btn ${selectedCategory === cat.id ? 'active' : ''}`}
               onClick={() => handleCategorySelect(cat.id)}
             >
-              {getCategoryIcon(cat.id)}
+              <CategoryIcon id={cat.id} size={16} />
               <span>{cat.name}</span>
             </button>
           ))}

@@ -32,24 +32,44 @@
 
 .category-pill-btn {
   background-color: #ffffff;
-  border: 1px solid #e5dfd5;
-  color: #57534e;
+  border: 1.5px solid #ebdcc5;
+  color: #2b2823;
   font-family: 'Outfit', 'Inter', sans-serif;
   font-size: 10px;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 20px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 30px;
   transition: all 0.25s ease;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
 }
 
-.category-pill-btn:hover,
+.category-pill-btn svg {
+  color: #a07d32;
+  transition: color 0.25s ease;
+}
+
+.category-pill-btn:hover {
+  background-color: #faf6ef;
+  border-color: #a07d32;
+  color: #a07d32;
+  transform: translateY(-1px);
+}
+
 .category-pill-btn.active {
-  background-color: #1c1917;
+  background-color: #353926;
   color: #ffffff;
-  border-color: #1c1917;
+  border-color: #353926;
+  box-shadow: 0 4px 14px rgba(53, 57, 38, 0.22);
+}
+
+.category-pill-btn.active svg {
+  color: #e5d7be;
 }
 
 .catalog-product-card {

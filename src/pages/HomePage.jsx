@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ShinyText from '../components/ShinyText';
 import HeroSection from '../components/HeroSection';
 import CuratedSeason from '../components/CuratedSeason';
 import ShopStyles from '../components/ShopStyles';
@@ -38,7 +39,7 @@ const HomePage = () => {
                   Monthly Luxury Pop-ups
                 </span>
                 <h2 className="exhibition-spotlight-title fw-semibold text-white mb-3">
-                  Experience WOWO Studio’s Exclusive Boutique Exhibitions
+                  <ShinyText text="Experience WOWO Studio’s Exclusive Boutique Exhibitions" color="#ffffff" shineColor="#f3d798" speed={3.5} />
                 </h2>
                 <p className="exhibition-spotlight-text text-light opacity-90 mb-4">
                   Every month, we bring our royal wedding couture, pure silk Kanjeevarams, and handcrafted festive ensembles directly to major luxury hubs across India. Reserve your VIP pass for private stylist consultations and unreleased trunk show drops.
@@ -77,7 +78,9 @@ const HomePage = () => {
         <div className="container px-3 px-lg-4">
           <div className="text-center mb-5 max-w-700 mx-auto">
             <span className="subtitle-gold">THE BOUTIQUE EXPERIENCE</span>
-            <h2 className="font-heading fw-semibold fs-2 mt-1">Why High-Fashion Patrons Choose WOWO</h2>
+            <h2 className="font-heading fw-semibold fs-2 mt-1">
+              <ShinyText text="Why High-Fashion Patrons Choose WOWO" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+            </h2>
           </div>
 
           <div className="row g-4">
