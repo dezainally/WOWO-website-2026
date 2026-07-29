@@ -164,11 +164,11 @@ const ProductDetailPage = () => {
 
                 {/* Secondary Action Buttons (WhatsApp & Call) */}
                 <div className="row g-2 mb-4">
-                  <div className="col-6">
+                  <div className="col-sm-6">
                     <button
                       type="button"
                       onClick={() => openWhatsApp(product.name)}
-                      className="btn-pdp-whatsapp w-100 d-flex align-items-center justify-content-center gap-2"
+                      className="btn-pdp-whatsapp w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l.206.331-1.154 4.217 4.316-1.132.375.251z"/>
@@ -176,37 +176,37 @@ const ProductDetailPage = () => {
                       <span>Inquire via WhatsApp</span>
                     </button>
                   </div>
-                  <div className="col-6">
+                  <div className="col-sm-6">
                     <button
                       type="button"
                       onClick={callNow}
-                      className="btn-pdp-call w-100 d-flex align-items-center justify-content-center gap-1.5"
+                      className="btn-pdp-call w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
                     >
-                      📞 Call Boutique
+                      📞 Call Stylist
                     </button>
                   </div>
                 </div>
 
-                {/* Tabs Section */}
-                <div className="pdp-tabs-container border-top pt-3">
-                  <div className="d-flex gap-3 border-bottom pb-2 mb-3">
+                {/* Information Accordion Tabs */}
+                <div className="pdp-tabs-container">
+                  <div className="d-flex border-bottom gap-4 mb-3">
                     <button
                       type="button"
-                      className={`tab-btn ${activeTab === 'description' ? 'active' : ''}`}
+                      className={`tab-btn bg-transparent border-0 pb-2 ${activeTab === 'description' ? 'active' : ''}`}
                       onClick={() => setActiveTab('description')}
                     >
-                      Description
+                      Couture Story
                     </button>
                     <button
                       type="button"
-                      className={`tab-btn ${activeTab === 'specs' ? 'active' : ''}`}
+                      className={`tab-btn bg-transparent border-0 pb-2 ${activeTab === 'specs' ? 'active' : ''}`}
                       onClick={() => setActiveTab('specs')}
                     >
-                      Fabric & Craftsmanship
+                      Fabric & Craft
                     </button>
                     <button
                       type="button"
-                      className={`tab-btn ${activeTab === 'care' ? 'active' : ''}`}
+                      className={`tab-btn bg-transparent border-0 pb-2 ${activeTab === 'care' ? 'active' : ''}`}
                       onClick={() => setActiveTab('care')}
                     >
                       Fitting & Care
@@ -253,9 +253,7 @@ const ProductDetailPage = () => {
         {/* Related Products Carousel Section */}
         <div className="related-products-section my-5">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h3 className="font-heading fw-semibold fs-3">
-              <ShinyText text="You May Also Admire" color="#1c1917" shineColor="#d4af37" speed={3.5} />
-            </h3>
+            <h3 className="font-heading fw-semibold fs-3">You May Also Admire</h3>
             <Link to="/collections" className="text-gold text-decoration-none small fw-semibold">
               View All Collections →
             </Link>
@@ -264,50 +262,21 @@ const ProductDetailPage = () => {
           <div className="row g-4">
             {relatedProducts.map((rel) => (
               <div key={rel._id || rel.id || rel.sku} className="col-lg-3 col-sm-6">
-                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100 position-relative d-flex flex-column">
-                  
-                  {/* Image Link */}
-                  <Link to={`/product/${rel._id || rel.id || rel.sku}`} className="catalog-img-wrapper overflow-hidden d-block">
-                    <img
-                      src={rel.images?.[0] || '/assets/images/image1.png'}
-                      alt={rel.name}
-                      className="catalog-product-img w-100"
-                    />
+                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100">
+                  <Link to={`/product/${rel._id || rel.id || rel.sku}`} className="catalog-img-wrapper d-block overflow-hidden">
+                    <img src={rel.images?.[0] || '/assets/images/image1.png'} alt={rel.name} className="catalog-product-img w-100" />
                   </Link>
-
-                  {/* Body Content */}
-                  <div className="p-3 d-flex flex-column flex-grow-1">
-                    <span className="catalog-sku-text mb-1">SKU: {rel.sku}</span>
-                    <Link to={`/product/${rel._id || rel.id || rel.sku}`} className="text-decoration-none text-dark">
-                      <h3 className="catalog-product-name fw-semibold mb-1">{rel.name}</h3>
-                    </Link>
-                    <p className="catalog-fabric-text mb-2">{rel.fabric}</p>
-
-                    <div className="mt-auto pt-3 border-top">
-                      <div className="d-flex align-items-center justify-content-between mb-2">
-                        <span className="price-on-request-badge">{rel.priceText || 'Price on Request'}</span>
-                      </div>
-
-                      <div className="d-grid gap-2">
-                        <button
-                          type="button"
-                          onClick={() => openInquiryModal(rel)}
-                          className="btn-request-price-catalog w-100"
-                        >
-                          Request Price & Details
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openWhatsApp(rel.name)}
-                          className="btn-whatsapp-catalog w-100 d-flex align-items-center justify-content-center gap-1.5"
-                        >
-                          💬 Inquire on WhatsApp
-                        </button>
-                      </div>
-                    </div>
-
+                  <div className="p-3">
+                    <h4 className="catalog-product-name fs-6 mb-1">{rel.name}</h4>
+                    <p className="price-on-request-badge mb-2">{rel.priceText || 'Price on Request'}</p>
+                    <button
+                      type="button"
+                      onClick={() => openInquiryModal(rel)}
+                      className="btn-request-price-catalog w-100"
+                    >
+                      Request Price
+                    </button>
                   </div>
-
                 </div>
               </div>
             ))}
