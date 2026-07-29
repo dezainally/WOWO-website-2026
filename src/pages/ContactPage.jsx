@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ShinyText from '../components/ShinyText';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
 import '../styles/ContactPage.css';
@@ -20,9 +19,7 @@ const ContactPage = () => {
       <div className="contact-header-banner text-center py-5 bg-dark text-white position-relative">
         <div className="container px-3">
           <span className="subtitle-gold letter-spacing-3">WE WOULD LOVE TO ASSIST YOU</span>
-          <h1 className="contact-header-title fw-semibold mt-2 mb-3">
-            <ShinyText text="Contact WOWO Studio" color="#ffffff" shineColor="#f3d798" speed={3.5} />
-          </h1>
+          <h1 className="contact-header-title fw-semibold mt-2 mb-3">Contact WOWO Studio</h1>
           <p className="contact-header-desc text-light opacity-80 max-w-700 mx-auto mb-0">
             Visit our flagship boutique studio in Manikonda, Hyderabad or reach out to our senior bridal consultants for exhibition details, price requests, and bespoke orders.
           </p>
@@ -36,9 +33,7 @@ const ContactPage = () => {
           <div className="col-lg-5">
             <div className="contact-info-card bg-white p-4 p-md-5 rounded-4 border shadow-sm h-100">
               <span className="subtitle-gold">FLAGSHIP BOUTIQUE STUDIO</span>
-              <h2 className="font-heading fw-semibold fs-3 mt-1 mb-4">
-                <ShinyText text="Hyderabad Studio" color="#1c1917" shineColor="#d4af37" speed={3.5} />
-              </h2>
+              <h2 className="font-heading fw-semibold fs-3 mt-1 mb-4">Hyderabad Studio</h2>
 
               <div className="d-flex align-items-start gap-3 mb-4">
                 <div className="contact-icon-box">📍</div>
@@ -117,9 +112,7 @@ const ContactPage = () => {
           <div className="col-lg-7">
             <div className="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
               <span className="subtitle-gold">GENERAL & BOUTIQUE INQUIRIES</span>
-              <h2 className="font-heading fw-semibold fs-3 mt-1 mb-3">
-                <ShinyText text="Send Us a Message" color="#1c1917" shineColor="#d4af37" speed={3.5} />
-              </h2>
+              <h2 className="font-heading fw-semibold fs-3 mt-1 mb-3">Send Us a Message</h2>
               <p className="small text-muted mb-4">
                 Have questions about our upcoming exhibitions, saree finishing, or customized bridal lehengas? Fill out the form below.
               </p>

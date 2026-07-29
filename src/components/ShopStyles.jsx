@@ -1,12 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import ShinyText from './ShinyText';
-import { PRODUCTS_DATA, CATEGORIES_DATA } from '../data/productsData';
-import { fetchPublicProducts } from '../utils/api';
+import { PRODUCTS_DATA } from '../data/productsData';
 import { useInquiry } from '../context/InquiryContext';
-import CategoryIcon from './CategoryIcon';
-import { animateCardsGSAP } from '../utils/useGSAPIntro';
 import '../styles/ShopStyles.css';
+
+import { fetchPublicProducts } from '../utils/api';
 
 const ShopStyles = () => {
   const { openInquiryModal } = useInquiry();
@@ -24,13 +22,6 @@ const ShopStyles = () => {
     };
     loadLiveProducts();
   }, []);
-
-  const handleCategorySelect = (catId) => {
-    setActiveCategory(catId);
-    setTimeout(() => {
-      animateCardsGSAP('.shop-product-card');
-    }, 50);
-  };
 
   const toggleWishlist = (e, id) => {
     e.preventDefault();
@@ -55,36 +46,49 @@ const ShopStyles = () => {
     }
   };
 
+  const categories = [
+    { id: 'all', label: 'ALL PIECES' },
+    { id: 'sarees', label: 'SAREES & HALF SAREES' },
+    { id: 'lehengas', label: 'BRIDAL LEHENGAS' },
+    { id: 'fusion', label: 'FUSION WEAR' },
+    { id: 'sherwanis', label: 'SHERWANIS' },
+    { id: 'gowns', label: 'EVENING GOWNS' }
+  ];
+
   const filteredProducts = activeCategory === 'all'
     ? productsList
-    : productsList.filter((p) => p.category === activeCategory);
+    : productsList.filter(p => p.category === activeCategory);
 
   return (
-    <section className="shop-styles-section py-5 bg-white">
-      <div className="container px-3 px-lg-4">
-        
-        {/* Section Header */}
-        <div className="text-center mb-4">
-          <span className="subtitle-gold letter-spacing-3">CURATED CATALOGUE</span>
-          <h2 className="font-heading fw-bold fs-1 mt-1 text-dark">
-            <ShinyText text="Shop By Couture Category" color="#1c1917" shineColor="#d4af37" speed={3.5} />
-          </h2>
-          <p className="text-muted small max-w-600 mx-auto">
-            Explore our artisanal creations handcrafted with pure mulberry silks, authentic zari, and bespoke embroidery.
-          </p>
+    <section className="shop-styles-section container-fluid py-5">
+      <div className="container position-relative">
+
+        {/* Section Header with Ornament Motif */}
+        <div className="text-center mb-4 shop-styles-header px-3">
+          <div className="subtitle-gold-wrapper mb-2 d-flex align-items-center justify-content-center gap-2">
+            <span className="subtitle-gold">CURATED STYLES</span>
+          </div>
+
+          <h2 className="shop-styles-title fw-semibold">EXPLORE OUR SIGNATURE COUTURE</h2>
+
+          {/* Golden Diamond Divider Line */}
+          <div className="shop-styles-divider mx-auto my-3">
+            <span className="divider-line"></span>
+            <span className="divider-diamond">◆</span>
+            <span className="divider-line"></span>
+          </div>
         </div>
 
-        {/* Category Pill Filters */}
-        <div className="d-flex justify-content-center flex-wrap gap-2 mb-4">
-          {CATEGORIES_DATA.map((cat) => (
+        {/* Pill Category Filter Tabs */}
+        <div className="d-flex justify-content-center flex-wrap gap-2 gap-md-3 mb-4 category-filter-pills px-3">
+          {categories.map((cat) => (
             <button
               key={cat.id}
               type="button"
               className={`category-pill-btn ${activeCategory === cat.id ? 'active' : ''}`}
-              onClick={() => handleCategorySelect(cat.id)}
+              onClick={() => setActiveCategory(cat.id)}
             >
-              <CategoryIcon id={cat.id} size={16} />
-              <span>{cat.name}</span>
+              {cat.label}
             </button>
           ))}
         </div>
@@ -107,12 +111,11 @@ const ShopStyles = () => {
           {/* Slider Scroll Track */}
           <div className="shop-slider-track" ref={sliderRef}>
             {filteredProducts.map((product) => {
-              const productId = product._id || product.id || product.sku;
-              const isWishlisted = !!wishlist[productId];
+              const isWishlisted = !!wishlist[product.id];
               const pImg = product.images ? product.images[0] : product.image;
 
               return (
-                <div key={productId} className="shop-slider-item">
+                <div key={product.id} className="shop-slider-item">
                   <div className="shop-product-card h-100 bg-white rounded-3 overflow-hidden d-flex flex-column">
 
                     {/* Top Image Container */}
@@ -121,7 +124,7 @@ const ShopStyles = () => {
                       <button
                         type="button"
                         className={`shop-wishlist-btn position-absolute top-0 end-0 m-2 border-0 d-flex align-items-center justify-content-center ${isWishlisted ? 'active' : ''}`}
-                        onClick={(e) => toggleWishlist(e, productId)}
+                        onClick={(e) => toggleWishlist(e, product.id)}
                         aria-label="Add to Wishlist"
                       >
                         <svg
@@ -140,7 +143,7 @@ const ShopStyles = () => {
                       </button>
 
                       {/* Image Link */}
-                      <Link to={`/product/${productId}`} className="d-block w-100 h-100">
+                      <Link to={`/product/${product.id}`} className="d-block w-100 h-100">
                         <img
                           src={pImg}
                           alt={product.name}
@@ -152,7 +155,7 @@ const ShopStyles = () => {
                     {/* Bottom Details Section */}
                     <div className="shop-product-details p-3 text-center d-flex flex-column justify-content-between flex-grow-1">
                       <div>
-                        <Link to={`/product/${productId}`} className="text-decoration-none color-dark">
+                        <Link to={`/product/${product.id}`} className="text-decoration-none color-dark">
                           <h3 className="shop-product-title fw-semibold">{product.name}</h3>
                         </Link>
                         <p className="shop-product-price mt-1 mb-3">{product.priceText || 'Price on Request'}</p>

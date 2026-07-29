@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ShinyText from '../components/ShinyText';
 import { PAST_WORKS_DATA } from '../data/pastWorksData';
 import { useInquiry } from '../context/InquiryContext';
 import '../styles/PastWorksPage.css';
@@ -27,9 +26,7 @@ const PastWorksPage = () => {
         {/* Page Hero Header */}
         <div className="text-center mb-5 past-works-header max-w-800 mx-auto px-3">
           <span className="subtitle-gold">SINCE 2020 COUTURE ARCHIVE</span>
-          <h1 className="past-works-title fw-semibold mt-1">
-            <ShinyText text="Celebrity & Bespoke Boutique Creations" color="#2b261f" shineColor="#d4af37" speed={3.5} />
-          </h1>
+          <h1 className="past-works-title fw-semibold mt-1">Celebrity & Bespoke Boutique Creations</h1>
 
           <div className="past-works-divider mx-auto my-3">
             <span className="divider-line"></span>

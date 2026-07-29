@@ -1,6 +1,5 @@
 import React from 'react';
 import brandVideo from '../assets/wowo-video.mp4';
-import ShinyText from './ShinyText';
 import '../styles/VideoSection.css';
 
 const VideoSection = () => {
@@ -37,7 +36,7 @@ const VideoSection = () => {
             <div className="video-section-content">
               <span className="video-section-subtitle">THE WOWO HERITAGE</span>
               <h2 className="video-section-title fw-semibold mt-2 mb-3">
-                <ShinyText text="Crafted with Elegance, Designed for Every Occasion" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+                Crafted with Elegance,<br className="d-none d-md-block" /> Designed for Every Occasion
               </h2>
               <p className="video-section-description mb-4">
                 At WOWO Studio, we celebrate the timeless artistry of Indian luxury couture.

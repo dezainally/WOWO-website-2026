@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ShinyText from './ShinyText';
 import imageLehenga from '../assets/images/image1.png';
 import imageFusion from '../assets/images/image2.jpg';
 import imageSherwani from '../assets/images/image3.jpg';
@@ -102,9 +101,7 @@ const CuratedSeason = () => {
             </svg>
           </div>
 
-          <h2 className="curated-title fw-semibold">
-            <ShinyText text="CURATED THIS SEASON" color="#2b261f" shineColor="#d4af37" speed={3.5} />
-          </h2>
+          <h2 className="curated-title fw-semibold">CURATED THIS SEASON</h2>
 
           {/* Golden accent line below title */}
           <div className="curated-title-line mx-auto my-3"></div>

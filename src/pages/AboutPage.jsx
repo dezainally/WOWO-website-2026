@@ -1,5 +1,4 @@
 import React from 'react';
-import ShinyText from '../components/ShinyText';
 import { Link } from 'react-router-dom';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
@@ -16,9 +15,7 @@ const AboutPage = () => {
       <div className="about-header-banner text-center py-5 bg-dark text-white position-relative">
         <div className="container px-3">
           <span className="subtitle-gold letter-spacing-3">THE ARTISTRY OF WOWO STUDIO</span>
-          <h1 className="about-header-title fw-semibold mt-2 mb-3">
-            <ShinyText text="Our Legacy & Craftsmanship" color="#ffffff" shineColor="#f3d798" speed={3.5} />
-          </h1>
+          <h1 className="about-header-title fw-semibold mt-2 mb-3">Our Legacy & Craftsmanship</h1>
           <p className="about-header-desc text-light opacity-80 max-w-700 mx-auto mb-0">
             Founded by Samatha Chowdary, WOWO Studio is dedicated to preserving authentic Indian handloom traditions while creating contemporary luxury fashion for modern brides and celebrations.
           </p>
@@ -37,9 +34,7 @@ const AboutPage = () => {
 
           <div className="col-lg-6">
             <span className="subtitle-gold">VISIONARY DESIGN</span>
-            <h2 className="font-heading fw-semibold fs-2 mt-1 mb-3">
-              <ShinyText text="A Passion for Heritage & Pure Silks" color="#1c1917" shineColor="#d4af37" speed={3.5} />
-            </h2>
+            <h2 className="font-heading fw-semibold fs-2 mt-1 mb-3">A Passion for Heritage & Pure Silks</h2>
             <p className="text-muted line-height-16 mb-3">
               At WOWO Studio, every weave tells a story of royal grandeur. We collaborate with master artisan families across Kanchipuram, Varanasi, and Chanderi who have inherited weaving secrets through generations.
             </p>

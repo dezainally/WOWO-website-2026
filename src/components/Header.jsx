@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useInquiry } from '../context/InquiryContext';
-import CategoryIcon from './CategoryIcon';
 import logoImage from '../assets/wowo-logo-website.avif';
 import '../styles/Header.css';
 
@@ -55,48 +54,10 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item dropdown-nav-item">
-                <NavLink className={({ isActive }) => `nav-link nav-link-custom d-flex align-items-center justify-content-center justify-content-lg-start gap-1 ${isActive ? 'active' : ''}`} to="/collections">
+              <li className="nav-item">
+                <NavLink className={({ isActive }) => `nav-link nav-link-custom ${isActive ? 'active' : ''}`} to="/collections">
                   Collections
-                  <svg className="dropdown-chevron ms-0.5" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
                 </NavLink>
-
-                {/* Hover Dropdown Menu */}
-                <div className="collections-dropdown-menu">
-                  <div className="dropdown-menu-inner">
-                    <div className="dropdown-header-title">COUTURE CATEGORIES</div>
-                    <Link to="/collections" className="dropdown-category-link">
-                      <CategoryIcon id="all" size={16} className="cat-icon-gold" />
-                      <span>All Collections</span>
-                    </Link>
-                    <Link to="/collections?cat=sarees" className="dropdown-category-link">
-                      <CategoryIcon id="sarees" size={16} className="cat-icon-gold" />
-                      <span>Sarees & Half Sarees</span>
-                    </Link>
-                    <Link to="/collections?cat=lehengas" className="dropdown-category-link">
-                      <CategoryIcon id="lehengas" size={16} className="cat-icon-gold" />
-                      <span>Bridal Lehengas</span>
-                    </Link>
-                    <Link to="/collections?cat=fusion" className="dropdown-category-link">
-                      <CategoryIcon id="fusion" size={16} className="cat-icon-gold" />
-                      <span>Fusion Wear</span>
-                    </Link>
-                    <Link to="/collections?cat=sherwanis" className="dropdown-category-link">
-                      <CategoryIcon id="sherwanis" size={16} className="cat-icon-gold" />
-                      <span>Sherwanis</span>
-                    </Link>
-                    <Link to="/collections?cat=dupattas" className="dropdown-category-link">
-                      <CategoryIcon id="dupattas" size={16} className="cat-icon-gold" />
-                      <span>Dupattas</span>
-                    </Link>
-                    <Link to="/collections?cat=gowns" className="dropdown-category-link">
-                      <CategoryIcon id="gowns" size={16} className="cat-icon-gold" />
-                      <span>Dresses & Gowns</span>
-                    </Link>
-                  </div>
-                </div>
               </li>
               <li className="nav-item">
                 <NavLink className={({ isActive }) => `nav-link nav-link-custom ${isActive ? 'active' : ''}`} to="/past-works">
