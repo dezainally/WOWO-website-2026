@@ -41,6 +41,20 @@ const ShopStyles = () => {
     }));
   };
 
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      const scrollAmount = sliderRef.current.clientWidth * 0.75;
+      sliderRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      const scrollAmount = sliderRef.current.clientWidth * 0.75;
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   const filteredProducts = activeCategory === 'all'
     ? productsList
     : productsList.filter((p) => p.category === activeCategory);
@@ -62,60 +76,122 @@ const ShopStyles = () => {
 
         {/* Category Pill Filters */}
         <div className="d-flex justify-content-center flex-wrap gap-2 mb-4">
-          {CATEGORIES_DATA.map((cat) => {
-            const isActive = activeCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleCategorySelect(cat.id)}
-                className={`category-pill-btn d-flex align-items-center gap-2 ${isActive ? 'active' : ''}`}
-              >
-                <CategoryIcon categoryId={cat.id} size={18} color={isActive ? '#ffffff' : '#353926'} />
-                <span>{cat.name}</span>
-              </button>
-            );
-          })}
+          {CATEGORIES_DATA.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className={`category-pill-btn ${activeCategory === cat.id ? 'active' : ''}`}
+              onClick={() => handleCategorySelect(cat.id)}
+            >
+              <CategoryIcon id={cat.id} size={16} />
+              <span>{cat.name}</span>
+            </button>
+          ))}
         </div>
 
-        {/* Products Grid */}
-        <div className="row g-4">
-          {filteredProducts.map((p) => (
-            <div key={p._id || p.id || p.sku} className="col-xl-3 col-lg-4 col-sm-6">
-              <div className="shop-product-card bg-white rounded-3 overflow-hidden border h-100 d-flex flex-column shadow-sm">
-                <div className="catalog-img-stage overflow-hidden position-relative" style={{ height: '320px' }}>
-                  <Link to={`/product/${p._id || p.id || p.sku}`}>
-                    <img src={p.images?.[0]} alt={p.name} className="catalog-img w-100 h-100 object-fit-cover" />
-                  </Link>
-                  {p.tag && (
-                    <span className="badge bg-gold position-absolute top-3 start-3">{p.tag}</span>
-                  )}
-                </div>
-                <div className="p-3 d-flex flex-column flex-grow-1">
-                  <span className="text-uppercase text-gold small font-heading letter-spacing-1 mb-1">
-                    {p.categoryName || 'Couture Piece'}
-                  </span>
-                  <h3 className="fs-6 font-heading fw-bold mb-2">
-                    <Link to={`/product/${p._id || p.id || p.sku}`} className="text-dark text-decoration-none">{p.name}</Link>
-                  </h3>
-                  <p className="small text-muted line-clamp-2 mb-3">{p.shortDesc}</p>
-                  
-                  <div className="mt-auto pt-2 border-top d-flex align-items-center justify-content-between">
-                    <span className="catalog-price-val text-dark font-heading fw-bold">
-                      {p.priceText || 'Price on Request'}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => openInquiryModal(p)}
-                      className="btn btn-dark btn-sm rounded-pill px-3 font-heading"
-                    >
-                      Inquire
-                    </button>
+        {/* Product Slider Container with Left / Right Arrows */}
+        <div className="shop-slider-wrapper position-relative mb-5">
+
+          {/* Left Arrow Button */}
+          <button
+            type="button"
+            className="slider-arrow-btn slider-arrow-prev d-flex align-items-center justify-content-center border-0"
+            onClick={scrollLeft}
+            aria-label="Previous Products"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+            </svg>
+          </button>
+
+          {/* Slider Scroll Track */}
+          <div className="shop-slider-track" ref={sliderRef}>
+            {filteredProducts.map((product) => {
+              const productId = product._id || product.id || product.sku;
+              const isWishlisted = !!wishlist[productId];
+              const pImg = product.images ? product.images[0] : product.image;
+
+              return (
+                <div key={productId} className="shop-slider-item">
+                  <div className="shop-product-card h-100 bg-white rounded-3 overflow-hidden d-flex flex-column">
+
+                    {/* Top Image Container */}
+                    <div className="shop-product-img-box position-relative overflow-hidden">
+                      {/* Wishlist Button */}
+                      <button
+                        type="button"
+                        className={`shop-wishlist-btn position-absolute top-0 end-0 m-2 border-0 d-flex align-items-center justify-content-center ${isWishlisted ? 'active' : ''}`}
+                        onClick={(e) => toggleWishlist(e, productId)}
+                        aria-label="Add to Wishlist"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="15"
+                          height="15"
+                          fill={isWishlisted ? '#c92a2a' : 'currentColor'}
+                          viewBox="0 0 16 16"
+                        >
+                          {isWishlisted ? (
+                            <path fillRule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                          ) : (
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01z" />
+                          )}
+                        </svg>
+                      </button>
+
+                      {/* Image Link */}
+                      <Link to={`/product/${productId}`} className="d-block w-100 h-100">
+                        <img
+                          src={pImg}
+                          alt={product.name}
+                          className="shop-product-img w-100 h-100 object-fit-cover"
+                        />
+                      </Link>
+                    </div>
+
+                    {/* Bottom Details Section */}
+                    <div className="shop-product-details p-3 text-center d-flex flex-column justify-content-between flex-grow-1">
+                      <div>
+                        <Link to={`/product/${productId}`} className="text-decoration-none color-dark">
+                          <h3 className="shop-product-title fw-semibold">{product.name}</h3>
+                        </Link>
+                        <p className="shop-product-price mt-1 mb-3">{product.priceText || 'Price on Request'}</p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => openInquiryModal(product)}
+                        className="btn shop-request-btn w-100 text-uppercase"
+                      >
+                        REQUEST PRICE
+                      </button>
+                    </div>
+
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              );
+            })}
+          </div>
+
+          {/* Right Arrow Button */}
+          <button
+            type="button"
+            className="slider-arrow-btn slider-arrow-next d-flex align-items-center justify-content-center border-0"
+            onClick={scrollRight}
+            aria-label="Next Products"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+            </svg>
+          </button>
+
+        </div>
+
+        {/* View Complete Boutique Catalog Button */}
+        <div className="text-center mt-4">
+          <Link to="/collections" className="btn shop-catalog-btn">
+            VIEW COMPLETE BOUTIQUE CATALOG &rarr;
+          </Link>
         </div>
 
       </div>

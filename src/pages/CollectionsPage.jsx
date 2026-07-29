@@ -47,7 +47,8 @@ const CollectionsPage = () => {
       const matchesSearch =
         (product.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
         (product.shortDesc || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (product.sku || '').toLowerCase().includes(searchQuery.toLowerCase());
+        (product.sku || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (product.fabric || '').toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCat && matchesSearch;
     });
   }, [productsList, selectedCategory, searchQuery]);
@@ -82,101 +83,96 @@ const CollectionsPage = () => {
           </div>
 
           <div className="d-flex align-items-center gap-3 w-100 w-md-auto justify-content-end">
-            <span className="small text-muted text-nowrap fw-medium">
-              Showing <strong>{filteredProducts.length}</strong> Couture Pieces
-            </span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="form-select form-input-custom text-nowrap w-auto"
+            >
+              <option value="featured">Featured Collections</option>
+              <option value="newest">Newest Arrivals 2026</option>
+              <option value="popular">Boutique Favorites</option>
+            </select>
           </div>
         </div>
 
-        {/* Category Pill Filter Bar */}
-        <div className="category-pills-bar d-flex justify-content-center flex-wrap gap-2 mb-5">
-          {CATEGORIES_DATA.map((cat) => {
-            const isActive = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleCategorySelect(cat.id)}
-                className={`category-pill-btn d-flex align-items-center gap-2 ${isActive ? 'active' : ''}`}
-              >
-                <CategoryIcon categoryId={cat.id} size={18} color={isActive ? '#ffffff' : '#353926'} />
-                <span>{cat.name}</span>
-              </button>
-            );
-          })}
+        {/* Category Pills Bar (Centered with Icons) */}
+        <div className="d-flex align-items-center justify-content-center flex-wrap gap-2 gap-md-3 mb-5 pb-2 border-bottom">
+          {CATEGORIES_DATA.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className={`category-pill-btn ${selectedCategory === cat.id ? 'active' : ''}`}
+              onClick={() => handleCategorySelect(cat.id)}
+            >
+              <CategoryIcon id={cat.id} size={16} />
+              <span>{cat.name}</span>
+            </button>
+          ))}
         </div>
 
-        {/* Products Grid Display */}
+        {/* Product Grid */}
         {filteredProducts.length > 0 ? (
           <div className="row g-4">
             {filteredProducts.map((product) => (
-              <div key={product._id || product.id || product.sku} className="col-xl-3 col-lg-4 col-sm-6">
-                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100 d-flex flex-column shadow-sm position-relative">
-                  <div className="catalog-img-stage overflow-hidden position-relative">
-                    <Link to={`/product/${product._id || product.id || product.sku}`}>
-                      <img
-                        src={product.images?.[0] || '/assets/images/image1.png'}
-                        alt={product.name}
-                        className="catalog-img w-100"
-                      />
-                    </Link>
-                    {product.tag && (
-                      <span className="badge bg-gold position-absolute top-3 start-3 shadow-sm">{product.tag}</span>
-                    )}
-                  </div>
+              <div key={product._id || product.id || product.sku} className="col-lg-3 col-md-4 col-sm-6">
+                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100 position-relative d-flex flex-column">
 
+                  {/* Image Link */}
+                  <Link to={`/product/${product._id || product.id || product.sku}`} className="catalog-img-wrapper overflow-hidden d-block">
+                    <img
+                      src={product.images?.[0] || '/assets/images/image1.png'}
+                      alt={product.name}
+                      className="catalog-product-img w-100"
+                    />
+                  </Link>
+
+                  {/* Body Content */}
                   <div className="p-3 d-flex flex-column flex-grow-1">
-                    <span className="text-uppercase text-gold small font-heading letter-spacing-1 mb-1">
-                      {product.categoryName || 'Couture Piece'}
-                    </span>
-                    <h3 className="catalog-product-title fs-6 fw-semibold mb-2">
-                      <Link to={`/product/${product._id || product.id || product.sku}`} className="text-dark text-decoration-none">
-                        {product.name}
-                      </Link>
-                    </h3>
+                    <span className="catalog-sku-text mb-1">SKU: {product.sku}</span>
+                    <Link to={`/product/${product._id || product.id || product.sku}`} className="text-decoration-none text-dark">
+                      <h3 className="catalog-product-name fw-semibold mb-1">{product.name}</h3>
+                    </Link>
+                    <p className="catalog-fabric-text mb-2">{product.fabric || product.shortDesc}</p>
 
-                    <p className="catalog-short-desc text-muted small line-clamp-2 mb-3">
-                      {product.shortDesc}
-                    </p>
-
-                    <div className="mt-auto pt-2 border-top d-flex align-items-center justify-content-between">
-                      <div>
-                        <span className="d-block small text-muted font-heading">BOUTIQUE PRICING</span>
-                        <span className="catalog-price-val text-dark font-heading fw-bold">
-                          {product.priceText || 'Price on Request'}
-                        </span>
+                    <div className="mt-auto pt-3 border-top">
+                      <div className="d-flex align-items-center justify-content-between mb-2">
+                        <span className="price-on-request-badge">{product.priceText || 'Price on Request'}</span>
                       </div>
 
-                      <div className="d-flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => openWhatsApp(product.name)}
-                          className="btn btn-success btn-sm px-2.5 rounded-pill"
-                          title="WhatsApp Inquiry"
-                        >
-                          💬
-                        </button>
+                      <div className="d-grid gap-2">
                         <button
                           type="button"
                           onClick={() => openInquiryModal(product)}
-                          className="btn btn-outline-dark btn-sm px-3 rounded-pill font-heading"
+                          className="btn-request-price-catalog w-100"
                         >
-                          Inquire
+                          Request Price & Details
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => openWhatsApp(product.name)}
+                          className="btn-whatsapp-catalog w-100 d-flex align-items-center justify-content-center gap-1.5"
+                        >
+                          💬 Inquire on WhatsApp
                         </button>
                       </div>
                     </div>
 
                   </div>
+
                 </div>
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-5 bg-white rounded-3 border">
-            <h4 className="font-heading fw-semibold mb-2">No Couture Pieces Found</h4>
-            <p className="text-muted small mb-3">Try adjusting your search criteria or explore another category.</p>
-            <button type="button" onClick={() => handleCategorySelect('all')} className="btn btn-gold rounded-pill px-4">
-              View All Collections
+            <h4 className="font-heading">No Couture Pieces Match Your Filter</h4>
+            <p className="text-muted small mb-3">Try adjusting your search query or selecting another category.</p>
+            <button
+              type="button"
+              onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }}
+              className="btn btn-outline-dark rounded-pill px-4"
+            >
+              Reset Filters
             </button>
           </div>
         )}
