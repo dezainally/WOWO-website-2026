@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ShinyText from '../components/ShinyText';
 import { PRODUCTS_DATA } from '../data/productsData';
+import { fetchPublicProducts } from '../utils/api';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
 import '../styles/ProductDetailPage.css';
@@ -10,8 +11,24 @@ const ProductDetailPage = () => {
   const { id } = useParams();
   const { openInquiryModal, openWhatsApp, callNow } = useInquiry();
 
-  // Find target product or default to first product
-  const product = PRODUCTS_DATA.find((p) => p.id === id) || PRODUCTS_DATA[0];
+  const [productsList, setProductsList] = useState(PRODUCTS_DATA);
+  const [product, setProduct] = useState(() => {
+    return PRODUCTS_DATA.find((p) => p._id === id || p.id === id || p.sku === id) || PRODUCTS_DATA[0];
+  });
+
+  useEffect(() => {
+    const loadLiveProducts = async () => {
+      const liveData = await fetchPublicProducts();
+      if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+        setProductsList(liveData);
+        const matched = liveData.find((p) => p._id === id || p.id === id || p.sku === id);
+        if (matched) {
+          setProduct(matched);
+        }
+      }
+    };
+    loadLiveProducts();
+  }, [id]);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('description');
@@ -20,7 +37,7 @@ const ProductDetailPage = () => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [zoomScale, setZoomScale] = useState(1);
 
-  const relatedProducts = PRODUCTS_DATA.filter((p) => p.id !== product.id).slice(0, 4);
+  const relatedProducts = productsList.filter((p) => (p._id || p.id) !== (product._id || product.id)).slice(0, 4);
 
   const handleZoomIn = () => {
     setZoomScale((prev) => Math.min(prev + 0.5, 3));
@@ -46,376 +63,200 @@ const ProductDetailPage = () => {
     setZoomScale(1);
   };
 
-  // Keyboard navigation & Escape key support
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (!isLightboxOpen) return;
-      if (e.key === 'Escape') {
-        setIsLightboxOpen(false);
-        setZoomScale(1);
-      } else if (e.key === 'ArrowRight') {
-        handleNextImage();
-      } else if (e.key === 'ArrowLeft') {
-        handlePrevImage();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen, product.images.length]);
+  const images = product?.images && product.images.length ? product.images : ['/assets/images/image1.png'];
 
   return (
-    <div className="product-detail-page bg-light-sand py-4">
+    <div className="pdp-wrapper bg-light-sand py-4 py-md-5">
       <div className="container px-3 px-lg-4">
 
         {/* Breadcrumb Navigation */}
         <nav aria-label="breadcrumb" className="mb-4">
-          <ol className="breadcrumb small font-inter">
+          <ol className="breadcrumb small">
             <li className="breadcrumb-item"><Link to="/" className="text-muted text-decoration-none">Home</Link></li>
             <li className="breadcrumb-item"><Link to="/collections" className="text-muted text-decoration-none">Collections</Link></li>
-            <li className="breadcrumb-item"><Link to={`/collections?cat=${product.category}`} className="text-muted text-decoration-none">{product.categoryName}</Link></li>
-            <li className="breadcrumb-item active text-dark fw-semibold" aria-current="page">{product.name}</li>
+            <li className="breadcrumb-item text-capitalize text-muted">{product?.category || 'Couture'}</li>
+            <li className="breadcrumb-item active font-heading text-dark fw-semibold" aria-current="page">{product?.name}</li>
           </ol>
         </nav>
 
-        {/* Main Product Stage */}
-        <div className="bg-white rounded-4 border p-4 p-lg-5 shadow-sm mb-5">
-          <div className="row g-4 g-lg-5">
+        {/* PDP Main Product Showcase Stage */}
+        <div className="row g-4 g-xl-5 mb-5">
 
-            {/* Left Column: Image Gallery & Thumbnails */}
-            <div className="col-lg-6">
-              <div className="product-gallery-container position-relative">
-                {/* Main Large Display Image Stage (Clickable for Fullscreen & Zoom) */}
+          {/* Left Column: Vertical Thumbnails + Main 4/5 Aspect Ratio Stage */}
+          <div className="col-lg-7">
+            <div className="d-flex flex-column-reverse flex-md-row gap-3">
+              
+              {/* Vertical Thumbnails List */}
+              <div className="pdp-thumbnails-wrapper d-flex flex-row flex-md-column gap-2 overflow-auto">
+                {images.map((imgUrl, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => setActiveImageIndex(index)}
+                    className={`pdp-thumb-btn ${activeImageIndex === index ? 'active' : ''}`}
+                  >
+                    <img src={imgUrl} alt={`${product.name} view ${index + 1}`} className="w-100 h-100 object-fit-cover" />
+                  </button>
+                ))}
+              </div>
+
+              {/* Main Image Stage */}
+              <div className="pdp-main-stage position-relative overflow-hidden rounded-3 border bg-white flex-grow-1">
+                <img
+                  src={images[activeImageIndex] || images[0]}
+                  alt={product.name}
+                  className="pdp-main-img w-100 h-100 object-fit-cover cursor-zoom-in"
+                  onClick={() => { setIsLightboxOpen(true); setZoomScale(1); }}
+                />
+
+                {/* Click to Zoom Hint Pill */}
                 <div
-                  className="main-image-stage rounded-3 overflow-hidden border mb-3 position-relative"
-                  onClick={() => setIsLightboxOpen(true)}
-                  title="Click for Fullscreen View & Zoom"
+                  className="pdp-zoom-badge position-absolute bottom-3 start-3 bg-dark bg-opacity-75 text-white px-3 py-1.5 rounded-pill small font-heading cursor-pointer d-flex align-items-center gap-1.5"
+                  onClick={() => { setIsLightboxOpen(true); setZoomScale(1); }}
                 >
-                  <img
-                    src={product.images[activeImageIndex] || product.images[0]}
-                    alt={product.name}
-                    className="pdp-main-img w-100"
-                  />
-                  <span className="zoom-hint-badge position-absolute d-flex align-items-center gap-2">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="15 3 21 3 21 9"></polyline>
-                      <polyline points="9 21 3 21 3 15"></polyline>
-                      <line x1="21" y1="3" x2="14" y2="10"></line>
-                      <line x1="3" y1="21" x2="10" y2="14"></line>
-                    </svg>
-                    <span>Click to view fullscreen</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                  </svg>
+                  <span>Click to Zoom & View Fullscreen ↗</span>
+                </div>
+
+                {images.length > 1 && (
+                  <div className="pdp-stage-arrows position-absolute top-50 translate-middle-y w-100 d-flex justify-content-between px-3 pointer-events-none">
+                    <button type="button" onClick={handlePrevImage} className="pdp-arrow-btn pointer-events-auto">‹</button>
+                    <button type="button" onClick={handleNextImage} className="pdp-arrow-btn pointer-events-auto">›</button>
+                  </div>
+                )}
+              </div>
+
+            </div>
+          </div>
+
+          {/* Right Column: Title, Boutique Price, Specs & Actions */}
+          <div className="col-lg-5">
+            <div className="pdp-info-panel bg-white p-4 p-md-5 rounded-4 border shadow-sm h-100 d-flex flex-column">
+              
+              <div className="mb-3">
+                <span className="badge bg-gold text-uppercase letter-spacing-2 mb-2">{product.categoryName || 'Bespoke Couture'}</span>
+                <h1 className="pdp-product-title font-heading fw-bold fs-2 text-dark mb-1">{product.name}</h1>
+                <span className="text-muted small">SKU: <strong>{product.sku}</strong> • Handcrafted in India</span>
+              </div>
+
+              {/* Price & In-Stock Box */}
+              <div className="pdp-pricing-box p-3.5 rounded-3 bg-light-sand border mb-4">
+                <span className="small text-muted font-heading d-block mb-1">BOUTIQUE PRICING</span>
+                <div className="d-flex align-items-baseline justify-content-between">
+                  <h2 className="font-heading fw-bold text-dark fs-3 mb-0">{product.priceText || 'Price on Request'}</h2>
+                  <span className="status-badge-green font-heading fs-7">
+                    ✓ In Stock • Fitting Available
                   </span>
                 </div>
-
-                {/* Thumbnail Selector Strip */}
-                <div className="d-flex align-items-center gap-3 thumbnail-strip">
-                  {product.images.map((img, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      className={`thumbnail-btn border-0 rounded-2 p-0 overflow-hidden ${activeImageIndex === idx ? 'active' : ''}`}
-                      onClick={() => setActiveImageIndex(idx)}
-                    >
-                      <img src={img} alt={`${product.name} view ${idx + 1}`} className="thumbnail-img w-100 h-100" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Details, Specifications, & Inquiry Actions */}
-            <div className="col-lg-6 d-flex flex-column">
-              <div className="pdp-header border-bottom pb-3 mb-4">
-                <span className="pdp-category-tag text-uppercase">{product.categoryName} • SKU: {product.sku}</span>
-                <h1 className="pdp-title fw-semibold mt-1 mb-2">{product.name}</h1>
-                <p className="pdp-short-desc text-muted mb-3">{product.shortDesc}</p>
-
-                {/* Redesigned Pricing & Made-to-Order Stock Box */}
-                <div className="pdp-price-badge-box p-3.5 p-md-4 rounded-4 border d-flex align-items-center justify-content-between mb-2">
-                  <div className="pdp-pricing-left">
-                    <span className="pdp-pricing-label d-block">BOUTIQUE PRICING</span>
-                    <h3 className="pdp-pricing-value font-heading mt-1 mb-0">
-                      PRICE ON<br />REQUEST
-                    </h3>
-                  </div>
-
-                  <div className="pdp-stock-badge-box d-flex align-items-start gap-2.5">
-                    <div className="pdp-stock-check-icon">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="pdp-stock-title">In Stock</div>
-                      <div className="pdp-stock-subtitle">
-                        Made-to-Order Fitting<br />Available
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              {/* Primary Call to Actions: Request Price, WhatsApp, Call Now */}
-              <div className="pdp-actions-box mb-4">
+              <p className="text-muted small line-height-16 mb-4">
+                {product.shortDesc || product.description}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="d-grid gap-2 mb-4">
                 <button
                   type="button"
                   onClick={() => openInquiryModal(product)}
-                  className="btn-pdp-request-price w-100 py-3 mb-3 d-flex align-items-center justify-content-center gap-2.5"
+                  className="btn btn-dark py-3 rounded-3 font-heading fw-semibold letter-spacing-1 text-uppercase"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                    <path d="M8 14h.01"></path>
-                    <path d="M12 14h.01"></path>
-                    <path d="M16 14h.01"></path>
-                  </svg>
-                  <span>REQUEST PRICE & CUSTOM FITTING</span>
+                  Request Price & Custom Fitting
                 </button>
 
-                <div className="row g-3">
-                  <div className="col-sm-6">
+                <div className="row g-2">
+                  <div className="col-6">
                     <button
                       type="button"
                       onClick={() => openWhatsApp(product.name)}
-                      className="btn-pdp-whatsapp w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
+                      className="btn btn-success w-100 py-2.5 rounded-3 d-flex align-items-center justify-content-center gap-2"
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l.206.331-1.154 4.217 4.316-1.132.375.251z"/>
                       </svg>
-                      <span>WHATSAPP INQUIRY</span>
+                      <span>WhatsApp Inquiry</span>
                     </button>
                   </div>
-                  <div className="col-sm-6">
+                  <div className="col-6">
                     <button
                       type="button"
                       onClick={callNow}
-                      className="btn-pdp-call w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
+                      className="btn btn-outline-dark w-100 py-2.5 rounded-3"
                     >
-                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                      </svg>
-                      <span>CALL STYLIST</span>
+                      📞 Call Boutique
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* Information Accordion Tabs */}
-              <div className="pdp-tabs-container">
-                <div className="d-flex border-bottom gap-4 mb-3">
-                  <button
-                    type="button"
-                    className={`tab-btn bg-transparent border-0 pb-2 ${activeTab === 'description' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('description')}
-                  >
-                    Couture Story
-                  </button>
-                  <button
-                    type="button"
-                    className={`tab-btn bg-transparent border-0 pb-2 ${activeTab === 'specs' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('specs')}
-                  >
-                    Fabric & Craft
-                  </button>
-                  <button
-                    type="button"
-                    className={`tab-btn bg-transparent border-0 pb-2 ${activeTab === 'care' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('care')}
-                  >
-                    Fitting & Care
-                  </button>
+              {/* Product Specifications List */}
+              <div className="pdp-specs-list mt-auto pt-3 border-top">
+                <div className="d-flex justify-content-between py-1.5 border-bottom small">
+                  <span className="text-muted">Fabric:</span>
+                  <span className="fw-semibold text-dark">{product.fabric || '100% Pure Silk'}</span>
                 </div>
-
-                <div className="tab-content-area">
-                  {activeTab === 'description' && (
-                    <div className="pdp-tab-pane">
-                      <p className="small text-muted line-height-16 mb-2">{product.description}</p>
-                      <p className="small text-gold fw-semibold mb-0">Recommended for: {product.occasion}</p>
-                    </div>
-                  )}
-
-                  {activeTab === 'specs' && (
-                    <div className="pdp-tab-pane">
-                      <ul className="list-unstyled small text-muted mb-0">
-                        <li className="mb-2"><strong>Fabric Composition:</strong> {product.fabric}</li>
-                        <li className="mb-2"><strong>Artisan Craftsmanship:</strong> {product.craft}</li>
-                        <li className="mb-0"><strong>Embellishments:</strong> Authentic Zardosi, Dabka & Metallic Threadwork</li>
-                      </ul>
-                    </div>
-                  )}
-
-                  {activeTab === 'care' && (
-                    <div className="pdp-tab-pane">
-                      <ul className="list-unstyled small text-muted mb-0">
-                        <li className="mb-2"><strong>Custom Tailoring Time:</strong> {product.leadTime}</li>
-                        <li className="mb-2"><strong>Garment Care:</strong> {product.care}</li>
-                        <li className="mb-0"><strong>Private Exhibition Fitting:</strong> Available upon RSVP at monthly trunk shows.</li>
-                      </ul>
-                    </div>
-                  )}
+                <div className="d-flex justify-content-between py-1.5 border-bottom small">
+                  <span className="text-muted">Craftsmanship:</span>
+                  <span className="fw-semibold text-dark">{product.craft || 'Handloom Zari Embroidery'}</span>
                 </div>
-
+                <div className="d-flex justify-content-between py-1.5 border-bottom small">
+                  <span className="text-muted">Lead Time:</span>
+                  <span className="fw-semibold text-dark">{product.leadTime || '2 Weeks Handcrafted Delivery'}</span>
+                </div>
               </div>
 
             </div>
-
           </div>
+
         </div>
 
-        {/* Related Products Carousel Section */}
-        <div className="related-products-section my-5">
-          <div className="d-flex align-items-center justify-content-between mb-4">
-            <h3 className="font-heading fw-semibold fs-3">
-              <ShinyText text="You May Also Admire" color="#1c1917" shineColor="#d4af37" speed={3.5} />
-            </h3>
-            <Link to="/collections" className="text-gold text-decoration-none small fw-semibold">
-              View All Collections →
-            </Link>
+        {/* Related Products Carousel / Grid */}
+        <section className="mt-5 pt-4 border-top">
+          <div className="text-center mb-4">
+            <span className="subtitle-gold">CURATED SUGGESTIONS</span>
+            <h3 className="font-heading fw-semibold fs-3 mt-1">You May Also Admire</h3>
           </div>
 
           <div className="row g-4">
             {relatedProducts.map((rel) => (
-              <div key={rel.id} className="col-lg-3 col-sm-6">
-                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100 position-relative d-flex flex-column">
-                  
-                  {/* Image Link */}
-                  <Link to={`/product/${rel.id}`} className="catalog-img-wrapper overflow-hidden d-block">
-                    <img
-                      src={rel.images[0]}
-                      alt={rel.name}
-                      className="catalog-product-img w-100"
-                    />
-                  </Link>
-
-                  {/* Body Content */}
-                  <div className="p-3 d-flex flex-column flex-grow-1">
-                    <span className="catalog-sku-text mb-1">SKU: {rel.sku}</span>
-                    <Link to={`/product/${rel.id}`} className="text-decoration-none text-dark">
-                      <h3 className="catalog-product-name fw-semibold mb-1">{rel.name}</h3>
+              <div key={rel._id || rel.id || rel.sku} className="col-md-3 col-sm-6">
+                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100 d-flex flex-column shadow-sm">
+                  <div className="catalog-img-stage overflow-hidden position-relative" style={{ height: '260px' }}>
+                    <Link to={`/product/${rel._id || rel.id || rel.sku}`}>
+                      <img src={rel.images?.[0]} alt={rel.name} className="catalog-img w-100 h-100 object-fit-cover" />
                     </Link>
-                    <p className="catalog-fabric-text mb-2">{rel.fabric}</p>
-
-                    <div className="mt-auto pt-3 border-top">
-                      <div className="d-flex align-items-center justify-content-between mb-2">
-                        <span className="price-on-request-badge">{rel.priceText}</span>
-                      </div>
-
-                      <div className="d-grid gap-2">
-                        <button
-                          type="button"
-                          onClick={() => openInquiryModal(rel)}
-                          className="btn-request-price-catalog w-100"
-                        >
-                          Request Price & Details
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openWhatsApp(rel.name)}
-                          className="btn-whatsapp-catalog w-100 d-flex align-items-center justify-content-center gap-1.5"
-                        >
-                          💬 Inquire on WhatsApp
-                        </button>
-                      </div>
-                    </div>
-
                   </div>
-
+                  <div className="p-3 d-flex flex-column flex-grow-1">
+                    <h4 className="fs-6 font-heading fw-bold mb-1">
+                      <Link to={`/product/${rel._id || rel.id || rel.sku}`} className="text-dark text-decoration-none">{rel.name}</Link>
+                    </h4>
+                    <span className="small text-gold font-heading fw-semibold mt-auto">{rel.priceText || 'Price on Request'}</span>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
       </div>
 
-      {/* Fullscreen Lightbox & Interactive Zoom Modal */}
+      {/* Fullscreen Lightbox Modal */}
       {isLightboxOpen && (
-        <div
-          className="pdp-lightbox-overlay"
-          onClick={() => { setIsLightboxOpen(false); setZoomScale(1); }}
-        >
-          {/* Top Control Toolbar (Zoom & Close Buttons) */}
-          <div className="pdp-lightbox-toolbar" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              className="pdp-lightbox-btn"
-              onClick={handleZoomOut}
-              disabled={zoomScale <= 1}
-              aria-label="Zoom Out"
-              title="Zoom Out"
-            >
-              −
-            </button>
-            <span className="pdp-lightbox-zoom-level">{Math.round(zoomScale * 100)}%</span>
-            <button
-              type="button"
-              className="pdp-lightbox-btn"
-              onClick={handleZoomIn}
-              disabled={zoomScale >= 3}
-              aria-label="Zoom In"
-              title="Zoom In"
-            >
-              +
-            </button>
-            <button
-              type="button"
-              className="pdp-lightbox-btn"
-              onClick={handleResetZoom}
-              aria-label="Reset Zoom"
-              title="Reset Zoom"
-            >
-              ↺
-            </button>
-            <button
-              type="button"
-              className="pdp-lightbox-btn"
-              onClick={() => { setIsLightboxOpen(false); setZoomScale(1); }}
-              aria-label="Close Lightbox"
-              title="Close (Esc)"
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* Previous Image Arrow */}
-          {product.images.length > 1 && (
-            <button
-              type="button"
-              className="pdp-lightbox-arrow pdp-lightbox-arrow-prev border-0"
-              onClick={handlePrevImage}
-              aria-label="Previous Image"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
-              </svg>
-            </button>
-          )}
-
-          {/* Zoomable Main Image Stage */}
-          <div className="pdp-lightbox-img-wrapper" onClick={(e) => e.stopPropagation()}>
+        <div className="pdp-lightbox-overlay" onClick={() => setIsLightboxOpen(false)}>
+          <div className="pdp-lightbox-container" onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="pdp-lightbox-close" onClick={() => setIsLightboxOpen(false)}>✕</button>
             <img
-              src={product.images[activeImageIndex] || product.images[0]}
+              src={images[activeImageIndex]}
               alt={product.name}
-              className="pdp-lightbox-img"
               style={{ transform: `scale(${zoomScale})` }}
+              className="pdp-lightbox-img"
             />
           </div>
-
-          {/* Next Image Arrow */}
-          {product.images.length > 1 && (
-            <button
-              type="button"
-              className="pdp-lightbox-arrow pdp-lightbox-arrow-next border-0"
-              onClick={handleNextImage}
-              aria-label="Next Image"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
-              </svg>
-            </button>
-          )}
         </div>
       )}
 

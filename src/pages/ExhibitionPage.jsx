@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ShinyText from '../components/ShinyText';
 import { UPCOMING_EXHIBITIONS, EXHIBITION_GALLERY, PAST_HIGHLIGHTS } from '../data/exhibitionsData';
+import { fetchPublicExhibitions } from '../utils/api';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
 import heroImage from '../assets/images/heroimage.webp';
@@ -8,6 +9,23 @@ import '../styles/ExhibitionPage.css';
 
 const ExhibitionPage = () => {
   const { openWhatsApp } = useInquiry();
+
+  const [upcomingExhibitions, setUpcomingExhibitions] = useState(UPCOMING_EXHIBITIONS);
+  const [exhibitionGallery, setExhibitionGallery] = useState(EXHIBITION_GALLERY);
+
+  useEffect(() => {
+    const loadLiveExhibitions = async () => {
+      const liveData = await fetchPublicExhibitions();
+      if (liveData && Array.isArray(liveData) && liveData.length > 0) {
+        const upcoming = liveData.filter(e => !e.isPastExhibition);
+        const past = liveData.filter(e => e.isPastExhibition);
+
+        if (upcoming.length > 0) setUpcomingExhibitions(upcoming);
+        if (past.length > 0) setExhibitionGallery(past);
+      }
+    };
+    loadLiveExhibitions();
+  }, []);
 
   // Gallery Lightbox Modal State
   const [selectedGallery, setSelectedGallery] = useState(null);
@@ -126,8 +144,8 @@ const ExhibitionPage = () => {
           </div>
 
           <div className="row g-4">
-            {UPCOMING_EXHIBITIONS.map((ex) => (
-              <div key={ex.id} className="col-lg-4 col-md-6">
+            {upcomingExhibitions.map((ex) => (
+              <div key={ex._id || ex.id} className="col-lg-4 col-md-6">
                 <div className="exhibition-event-card bg-white rounded-4 overflow-hidden border h-100 d-flex flex-column shadow-sm">
                   <div className="ex-img-wrapper position-relative overflow-hidden">
                     <img src={ex.image} alt={ex.title} className="ex-img w-100" />
@@ -143,20 +161,24 @@ const ExhibitionPage = () => {
                     <h3 className="ex-title fs-5 mb-2">{ex.title}</h3>
                     <p className="ex-venue small text-muted mb-3">📍 <strong>Venue:</strong> {ex.venue}</p>
 
-                    <div className="ex-time-box p-2.5 rounded bg-light-sand border mb-3 px-2">
+                    <div className="ex-time-box p-2.5 rounded bg-light-sand border mb-3">
                       <p className="small mb-1"><strong>Dates:</strong> {ex.dates}</p>
                       <p className="small mb-0 text-muted"><strong>Hours:</strong> {ex.time}</p>
                     </div>
 
-                    <h5 className="fs-7 fw-bold mb-2">Exhibition Privileges:</h5>
-                    <ul className="list-unstyled small text-muted mb-4">
-                      {ex.highlights.map((h, i) => (
-                        <li key={i} className="mb-1">✨ {h}</li>
-                      ))}
-                    </ul>
+                    {ex.highlights && ex.highlights.length > 0 && (
+                      <>
+                        <h5 className="fs-7 fw-bold mb-2">Exhibition Privileges:</h5>
+                        <ul className="list-unstyled small text-muted mb-4">
+                          {ex.highlights.map((h, i) => (
+                            <li key={i} className="mb-1">✨ {h}</li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
 
                     <div className="mt-auto">
-                      <a href="#rsvp" className="btn btn-dark w-100 py-2.5 rounded-pill cinzel-font">
+                      <a href="#rsvp" className="btn btn-dark w-100 py-2.5 rounded-pill font-heading">
                         Register for VIP Access Pass
                       </a>
                     </div>
@@ -181,28 +203,28 @@ const ExhibitionPage = () => {
           </div>
 
           <div className="row g-4">
-            {EXHIBITION_GALLERY.map((g) => (
-              <div key={g.id} className="col-md-4 col-sm-6">
+            {exhibitionGallery.map((g) => (
+              <div key={g._id || g.id} className="col-md-4 col-sm-6">
                 <div
                   className="gallery-item-card position-relative overflow-hidden border shadow-sm"
                   onClick={() => handleOpenGallery(g)}
                   title={`Click to view ${g.title} photo & video gallery`}
                 >
                   <img src={g.image} alt={g.title} className="gallery-img w-100" />
-
+                  
                   {/* Play & View Media Overlay Icon */}
-                  {/* <div className="gallery-play-badge">
+                  <div className="gallery-play-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polygon points="5 3 19 12 5 21 5 3"></polygon>
                     </svg>
-                  </div> */}
+                  </div>
 
                   <div className="gallery-overlay p-3 d-flex flex-column justify-content-end">
                     <div className="d-flex align-items-center justify-content-between mb-1">
-                      <span className="badge bg-gold">{g.location} • {g.year}</span>
-                      {/* <span className="badge bg-dark bg-opacity-75 text-white">{g.itemCount || '5 Items'}</span> */}
+                      <span className="badge bg-gold">{g.location || g.city} • {g.year}</span>
+                      <span className="badge bg-dark bg-opacity-75 text-white">{g.media?.length || '5 Items'}</span>
                     </div>
-                    <h5 className="text-white fs-6 mb-1 cinzel-font">{g.title}</h5>
+                    <h5 className="text-white fs-6 mb-1 font-heading">{g.title}</h5>
                     <span className="gallery-view-hint">🎬 Click to open photos & videos ↗</span>
                   </div>
                 </div>
@@ -324,13 +346,13 @@ const ExhibitionPage = () => {
       {selectedGallery && (
         <div className="ex-modal-overlay" onClick={handleCloseGallery}>
           <div className="ex-modal-container" onClick={(e) => e.stopPropagation()}>
-
+            
             {/* Modal Header */}
             <div className="ex-modal-header d-flex align-items-center justify-content-between">
               <div>
                 <h3 className="ex-modal-title mb-0">{selectedGallery.title}</h3>
                 <span className="ex-modal-subtitle">
-                  📍 {selectedGallery.venue} • {selectedGallery.location} ({selectedGallery.year})
+                  📍 {selectedGallery.venue} • {selectedGallery.location || selectedGallery.city} ({selectedGallery.year})
                 </span>
               </div>
               <button
@@ -407,13 +429,13 @@ const ExhibitionPage = () => {
                   )}
 
                   {/* Caption Bar */}
-                  {/* <div className="ex-main-caption-bar d-flex align-items-center justify-content-between">
+                  <div className="ex-main-caption-bar d-flex align-items-center justify-content-between">
                     <span>
                       {activeMedia.type === 'video' ? '🎥 ' : '📷 '}
                       {activeMedia.caption}
                     </span>
                     <span className="badge bg-gold ms-2">WOWO Exhibition Archive</span>
-                  </div> */}
+                  </div>
                 </>
               ) : (
                 <div className="text-white p-4">No media available for this filter.</div>
