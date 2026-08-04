@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ShinyText from '../components/ShinyText';
 import { UPCOMING_EXHIBITIONS, EXHIBITION_GALLERY, PAST_HIGHLIGHTS } from '../data/exhibitionsData';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
@@ -7,6 +8,11 @@ import '../styles/ExhibitionPage.css';
 
 const ExhibitionPage = () => {
   const { openWhatsApp } = useInquiry();
+
+  // Gallery Lightbox Modal State
+  const [selectedGallery, setSelectedGallery] = useState(null);
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+  const [mediaFilter, setMediaFilter] = useState('all');
 
   const [rsvpData, setRsvpData] = useState({
     name: '',
@@ -28,6 +34,43 @@ const ExhibitionPage = () => {
     setRsvpSuccess(true);
   };
 
+  const handleOpenGallery = (galleryItem) => {
+    setSelectedGallery(galleryItem);
+    setActiveMediaIndex(0);
+    setMediaFilter('all');
+  };
+
+  const handleCloseGallery = () => {
+    setSelectedGallery(null);
+    setActiveMediaIndex(0);
+    setMediaFilter('all');
+  };
+
+  // Filtered media list based on 'all', 'videos', 'images' tab
+  const getFilteredMedia = () => {
+    if (!selectedGallery || !selectedGallery.media) return [];
+    if (mediaFilter === 'videos') {
+      return selectedGallery.media.filter(m => m.type === 'video');
+    }
+    if (mediaFilter === 'images') {
+      return selectedGallery.media.filter(m => m.type === 'image');
+    }
+    return selectedGallery.media;
+  };
+
+  const filteredMediaList = getFilteredMedia();
+  const activeMedia = filteredMediaList[activeMediaIndex] || filteredMediaList[0] || selectedGallery?.media?.[0];
+
+  const handlePrevMedia = () => {
+    if (!filteredMediaList.length) return;
+    setActiveMediaIndex((prev) => (prev === 0 ? filteredMediaList.length - 1 : prev - 1));
+  };
+
+  const handleNextMedia = () => {
+    if (!filteredMediaList.length) return;
+    setActiveMediaIndex((prev) => (prev === filteredMediaList.length - 1 ? 0 : prev + 1));
+  };
+
   return (
     <div className="exhibition-page-wrapper bg-light-sand py-4">
 
@@ -38,7 +81,7 @@ const ExhibitionPage = () => {
             Monthly Boutique Trunk Shows
           </span>
           <h1 className="exhibition-hero-title fw-semibold mt-1 mb-3">
-            WOWO Studio Luxury Exhibitions
+            <ShinyText text="WOWO Studio Luxury Exhibitions" color="#ffffff" shineColor="#f3d798" speed={3.5} />
           </h1>
           <p className="exhibition-hero-desc text-light opacity-90 max-w-800 mx-auto mb-4">
             We organize exclusive boutique exhibitions every month, showcasing our latest premium and luxury collections for weddings, festive occasions, parties, and special events across major cities.
@@ -74,7 +117,9 @@ const ExhibitionPage = () => {
         <section id="schedule" className="mb-5 pt-3">
           <div className="text-center mb-5 max-w-700 mx-auto">
             <span className="subtitle-gold">MONTHLY POP-UP DATES</span>
-            <h2 className="font-heading fw-semibold fs-2 mt-1">Upcoming Exhibition Schedule</h2>
+            <h2 className="font-heading fw-semibold fs-2 mt-1">
+              <ShinyText text="Upcoming Exhibition Schedule" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+            </h2>
             <p className="small text-muted">
               Book your private appointment or walk in during exhibition hours for bespoke bridal consultations.
             </p>
@@ -98,7 +143,7 @@ const ExhibitionPage = () => {
                     <h3 className="ex-title fs-5 mb-2">{ex.title}</h3>
                     <p className="ex-venue small text-muted mb-3">📍 <strong>Venue:</strong> {ex.venue}</p>
 
-                    <div className="ex-time-box p-2.5 rounded bg-light-sand border mb-3">
+                    <div className="ex-time-box p-2.5 rounded bg-light-sand border mb-3 px-2">
                       <p className="small mb-1"><strong>Dates:</strong> {ex.dates}</p>
                       <p className="small mb-0 text-muted"><strong>Hours:</strong> {ex.time}</p>
                     </div>
@@ -111,7 +156,7 @@ const ExhibitionPage = () => {
                     </ul>
 
                     <div className="mt-auto">
-                      <a href="#rsvp" className="btn btn-dark w-100 py-2.5 rounded-pill font-heading">
+                      <a href="#rsvp" className="btn btn-dark w-100 py-2.5 rounded-pill cinzel-font">
                         Register for VIP Access Pass
                       </a>
                     </div>
@@ -123,22 +168,42 @@ const ExhibitionPage = () => {
           </div>
         </section>
 
-        {/* Section 2: Exhibition Gallery (Past Events) */}
+        {/* Section 2: Exhibition Gallery (Past Events with Video & Photo Lightbox) */}
         <section className="mb-5 py-4">
           <div className="text-center mb-5 max-w-700 mx-auto">
-            <span className="subtitle-gold">EVENT HIGHLIGHTS</span>
-            <h2 className="font-heading fw-semibold fs-2 mt-1">Glimpses From Previous Exhibitions</h2>
-            <p className="small text-muted">A look back at our recent luxury trunk shows and happy brides across India.</p>
+            <span className="subtitle-gold">EVENT HIGHLIGHTS & MEDIA</span>
+            <h2 className="font-heading fw-semibold fs-2 mt-1">
+              <ShinyText text="Glimpses From Previous Exhibitions" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+            </h2>
+            <p className="small text-muted">
+              Click on any exhibition card below to explore videos, photos, runway highlights & backstage glimpses from our past events.
+            </p>
           </div>
 
-          <div className="row g-3">
+          <div className="row g-4">
             {EXHIBITION_GALLERY.map((g) => (
               <div key={g.id} className="col-md-4 col-sm-6">
-                <div className="gallery-item-card position-relative overflow-hidden rounded-3 border">
+                <div
+                  className="gallery-item-card position-relative overflow-hidden border shadow-sm rounded-4 cursor-pointer"
+                  onClick={() => handleOpenGallery(g)}
+                  title={`Click to view ${g.title} photo & video gallery`}
+                >
                   <img src={g.image} alt={g.title} className="gallery-img w-100" />
+
+                  {/* Play & Media Badge Overlay Icon */}
+                  <div className="gallery-play-badge d-flex align-items-center justify-content-center">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </div>
+
                   <div className="gallery-overlay p-3 d-flex flex-column justify-content-end">
-                    <span className="badge bg-gold align-self-start mb-1">{g.location} ({g.year})</span>
-                    <h5 className="text-white fs-6 mb-0 font-heading">{g.title}</h5>
+                    <div className="d-flex align-items-center justify-content-between mb-1">
+                      <span className="badge bg-gold">{g.location} • {g.year}</span>
+
+                    </div>
+                    <h5 className="text-white fs-6 mb-1 cinzel-font">{g.title}</h5>
+                    <span className="gallery-view-hint">🎬 Click to view videos & photos ↗</span>
                   </div>
                 </div>
               </div>
@@ -152,7 +217,9 @@ const ExhibitionPage = () => {
 
             <div className="col-lg-5">
               <span className="subtitle-gold">VIP ACCESS REGISTRATION</span>
-              <h2 className="font-heading fw-semibold fs-2 mt-1 mb-3">Reserve Your Invitation Pass</h2>
+              <h2 className="font-heading fw-semibold fs-2 mt-1 mb-3">
+                <ShinyText text="Reserve Your Invitation Pass" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+              </h2>
               <p className="text-muted small line-height-16 mb-4">
                 Registering for our monthly boutique exhibitions guarantees priority entry, private 1-on-1 stylist sessions with Samatha Chowdary, and complimentary high-tea.
               </p>
@@ -252,6 +319,127 @@ const ExhibitionPage = () => {
         </section>
 
       </div>
+
+      {/* Interactive Exhibition Gallery Lightbox Modal */}
+      {selectedGallery && (
+        <div className="ex-modal-overlay" onClick={handleCloseGallery}>
+          <div className="ex-modal-container" onClick={(e) => e.stopPropagation()}>
+
+            {/* Modal Header */}
+            <div className="ex-modal-header d-flex align-items-center justify-content-between px-4 py-3">
+              <div>
+                <h3 className="ex-modal-title mb-0">{selectedGallery.title}</h3>
+                <span className="ex-modal-subtitle">
+                  📍 {selectedGallery.venue || 'Boutique Venue'} • {selectedGallery.location} ({selectedGallery.year})
+                </span>
+              </div>
+              <button
+                type="button"
+                className="ex-modal-close-btn border-0"
+                onClick={handleCloseGallery}
+                title="Close Gallery"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Filter Tabs Bar */}
+            <div className="ex-modal-tabs-bar d-flex align-items-center justify-content-between px-4 py-2 bg-dark border-bottom border-secondary border-opacity-25">
+              <div className="d-flex align-items-center gap-2">
+                <button
+                  type="button"
+                  className={`ex-modal-filter-tab ${mediaFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => { setMediaFilter('all'); setActiveMediaIndex(0); }}
+                >
+                  All Media ({selectedGallery.media?.length || 0})
+                </button>
+                <button
+                  type="button"
+                  className={`ex-modal-filter-tab ${mediaFilter === 'videos' ? 'active' : ''}`}
+                  onClick={() => { setMediaFilter('videos'); setActiveMediaIndex(0); }}
+                >
+                  🎥 Videos ({selectedGallery.media?.filter(m => m.type === 'video').length || 0})
+                </button>
+                <button
+                  type="button"
+                  className={`ex-modal-filter-tab ${mediaFilter === 'images' ? 'active' : ''}`}
+                  onClick={() => { setMediaFilter('images'); setActiveMediaIndex(0); }}
+                >
+                  📷 Photos ({selectedGallery.media?.filter(m => m.type === 'image').length || 0})
+                </button>
+              </div>
+              <span className="small text-gold-light d-none d-sm-inline font-heading">
+                Item {activeMediaIndex + 1} of {filteredMediaList.length}
+              </span>
+            </div>
+
+            {/* Main Media Display Stage */}
+            <div className="ex-modal-stage">
+              {activeMedia ? (
+                <div className="ex-media-stage-inner d-flex flex-column align-items-center justify-content-center w-100 h-100 position-relative">
+                  {activeMedia.type === 'video' ? (
+                    <video
+                      key={activeMedia.url || activeMedia.src}
+                      src={activeMedia.url || activeMedia.src}
+                      controls
+                      autoPlay
+                      className="ex-modal-media"
+                    />
+                  ) : (
+                    <img
+                      src={activeMedia.url || activeMedia.src}
+                      alt={activeMedia.title || activeMedia.caption || selectedGallery.title}
+                      className="ex-modal-media"
+                    />
+                  )}
+
+                  {/* Caption Bar */}
+                  <div className="ex-media-caption-badge mt-3 px-3 py-1.5 rounded-pill text-white small d-flex align-items-center gap-2">
+                    <span>{activeMedia.type === 'video' ? '🎥' : '📷'} {activeMedia.title || activeMedia.caption}</span>
+                    {activeMedia.caption && <span className="text-gold opacity-90">• {activeMedia.caption}</span>}
+                  </div>
+
+                  {/* Navigation Arrows */}
+                  {filteredMediaList.length > 1 && (
+                    <>
+                      <button type="button" className="ex-modal-nav-btn ex-modal-prev" onClick={handlePrevMedia} title="Previous Media">
+                        ‹
+                      </button>
+                      <button type="button" className="ex-modal-nav-btn ex-modal-next" onClick={handleNextMedia} title="Next Media">
+                        ›
+                      </button>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="text-white p-4">No media available for this filter.</div>
+              )}
+            </div>
+
+            {/* Bottom Thumbnail Strip */}
+            <div className="ex-modal-thumbnails-bar d-flex align-items-center justify-content-center">
+              {filteredMediaList.map((mediaItem, index) => {
+                const mediaSrc = mediaItem.url || mediaItem.src || selectedGallery.image;
+                return (
+                  <button
+                    key={mediaItem.id || index}
+                    type="button"
+                    className={`ex-thumb-btn ${activeMediaIndex === index ? 'active' : ''}`}
+                    onClick={() => setActiveMediaIndex(index)}
+                    title={mediaItem.title || `Media ${index + 1}`}
+                  >
+                    <img src={mediaSrc} alt={mediaItem.title || `Thumb ${index + 1}`} className="ex-thumb-img" />
+                    <span className="ex-thumb-type-badge">
+                      {mediaItem.type === 'video' ? '🎥' : '📷'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+          </div>
+        </div>
+      )}
 
       <NewsletterSection />
     </div>

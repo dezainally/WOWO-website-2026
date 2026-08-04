@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -8,36 +8,46 @@ gsap.registerPlugin(ScrollTrigger);
 export const useGSAPIntro = () => {
   const location = useLocation();
 
+  // Instant pre-paint scroll reset to top (0,0) before browser paint
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [location.pathname, location.search, location.hash, location.key]);
+
   useEffect(() => {
-    // Ensure page is scrolled to top on navigation
+    // Re-verify top position after DOM paint
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
 
-    // Small delay to ensure DOM nodes are painted after route/location change
+    // Small delay to allow React DOM paint before initializing GSAP triggers
     const timer = setTimeout(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
       ScrollTrigger.refresh();
 
-      // 1. Hero & Header Banner Elements (Titles, Subtitles, Breadcrumbs, Paragraphs)
-      const headerContainers = document.querySelectorAll(
+      // 1. Hero & Top Banner Intro (Titles, Subtitles, Badges, Action Buttons)
+      const heroBanners = document.querySelectorAll(
         '.contact-header-banner, .catalog-header-banner, .about-header-banner, .exhibition-hero-banner, .past-works-header, .hero-banner-section, .pdp-header'
       );
 
-      headerContainers.forEach((container) => {
-        const elements = container.querySelectorAll(
-          '.subtitle-gold, h1, h2, p, .breadcrumb, .badge, button, a'
+      heroBanners.forEach((banner) => {
+        const textElements = banner.querySelectorAll(
+          '.subtitle-gold, h1, h2, p, .breadcrumb, .badge, .btn, button, a'
         );
-        if (elements.length > 0) {
+        if (textElements.length > 0) {
           gsap.fromTo(
-            elements,
-            { y: 35, opacity: 0 },
+            textElements,
+            { y: 40, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 0.85,
+              duration: 0.9,
               stagger: 0.1,
               ease: 'power3.out',
               overwrite: 'auto'
@@ -46,19 +56,19 @@ export const useGSAPIntro = () => {
         }
       });
 
-      // 2. Section Headers (Curated Season, Shop Styles, Testimonials, Video, Newsletter)
+      // 2. Section Headers (Subtitles, Section Titles, Accent Lines)
       const sectionHeaders = document.querySelectorAll(
         '.curated-header-block, .shop-styles-header, .testimonials-header, .video-section-content, .newsletter-box, .exhibition-spotlight-section, .boutique-trust-section .text-center'
       );
 
       sectionHeaders.forEach((header) => {
         const children = header.querySelectorAll(
-          '.subtitle-gold, .curated-title, .shop-styles-title, .testimonials-title, .video-section-subtitle, .video-section-title, .newsletter-section-tag, .newsletter-section-title, .curated-motif, .curated-title-line, .shop-styles-divider, .testimonials-divider, p'
+          '.subtitle-gold, h2, p, .curated-motif, .curated-title-line, .shop-styles-divider, .testimonials-divider, .newsletter-section-tag'
         );
         if (children.length > 0) {
           gsap.fromTo(
             children,
-            { y: 30, opacity: 0 },
+            { y: 35, opacity: 0 },
             {
               y: 0,
               opacity: 1,
@@ -75,25 +85,25 @@ export const useGSAPIntro = () => {
         }
       });
 
-      // 3. Grid Cards (Product Cards, Category Cards, Testimonial Cards, Trust Cards, Stat Cards, Gallery Cards)
+      // 3. Grid Cards (Product Cards, Category Cards, Testimonial Cards, Stat Cards, Gallery Cards)
       const cardSections = document.querySelectorAll(
-        '.row, .curated-cards-grid, .shop-slider-track, .testimonial-slider-track'
+        '.row, .curated-cards-grid, .shop-slider-track, .testimonial-slider-track, .category-filter-pills'
       );
 
       cardSections.forEach((section) => {
         const cards = section.querySelectorAll(
-          '.shop-product-card, .curated-card-wrapper, .catalog-product-card, .testimonial-card, .trust-card, .stat-card, .exhibition-event-card, .gallery-item-card, .past-work-card'
+          '.shop-product-card, .curated-card-wrapper, .catalog-product-card, .testimonial-card, .trust-card, .stat-card, .exhibition-event-card, .gallery-item-card, .past-work-card, .category-pill-btn'
         );
         if (cards.length > 0) {
           gsap.fromTo(
             cards,
-            { y: 45, opacity: 0, scale: 0.96 },
+            { y: 45, opacity: 0, scale: 0.95 },
             {
               y: 0,
               opacity: 1,
               scale: 1,
-              duration: 0.75,
-              stagger: 0.08,
+              duration: 0.8,
+              stagger: 0.07,
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: section,
@@ -105,21 +115,21 @@ export const useGSAPIntro = () => {
         }
       });
 
-      // 4. Photos / Product Display Stages
+      // 4. Photos, Main Images, Display Stages
       const photoContainers = document.querySelectorAll(
-        '.main-image-stage, .about-img-stage, .hero-banner-img, .video-section img, .testimonial-img-box img, .next-exhibition-mini-card'
+        '.main-image-stage, .about-img-stage, .hero-banner-img, .video-section img, .testimonial-img-box img, .next-exhibition-card'
       );
 
       photoContainers.forEach((photo) => {
         gsap.fromTo(
           photo,
-          { opacity: 0, scale: 0.97, y: 20 },
+          { opacity: 0, scale: 0.96, y: 25 },
           {
             opacity: 1,
             scale: 1,
             y: 0,
-            duration: 0.9,
-            ease: 'power2.out',
+            duration: 0.95,
+            ease: 'power3.out',
             scrollTrigger: {
               trigger: photo,
               start: 'top 88%',
@@ -129,23 +139,24 @@ export const useGSAPIntro = () => {
         );
       });
 
-      // 5. Interactive Action Buttons & Pill Filters
-      const buttonGroups = document.querySelectorAll(
-        '.category-pill-btn, .btn-pdp-request-price, .btn-pdp-whatsapp, .btn-pdp-call, .btn-gold-lg, .btn-request-header, .shop-slider-arrow, .testimonial-arrow'
+      // 5. Interactive Buttons
+      const actionButtons = document.querySelectorAll(
+        '.btn-gold, .btn-gold-lg, .btn-pdp-request-price, .btn-pdp-whatsapp, .btn-pdp-call, .btn-request-header, .shop-slider-arrow, .testimonial-arrow'
       );
 
-      if (buttonGroups.length > 0) {
+      if (actionButtons.length > 0) {
         gsap.fromTo(
-          buttonGroups,
-          { y: 15, opacity: 0 },
+          actionButtons,
+          { y: 20, opacity: 0, scale: 0.96 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.65,
+            scale: 1,
+            duration: 0.7,
             stagger: 0.04,
-            ease: 'back.out(1.4)',
+            ease: 'back.out(1.5)',
             scrollTrigger: {
-              trigger: buttonGroups[0],
+              trigger: actionButtons[0],
               start: 'top 92%',
               toggleActions: 'play none none none',
             },
@@ -153,7 +164,7 @@ export const useGSAPIntro = () => {
         );
       }
 
-    }, 120);
+    }, 80);
 
     return () => {
       clearTimeout(timer);

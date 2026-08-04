@@ -1,27 +1,25 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { PRODUCTS_DATA } from '../data/productsData';
+import ShinyText from './ShinyText';
+import { PRODUCTS_DATA, CATEGORIES_DATA } from '../data/productsData';
 import { useInquiry } from '../context/InquiryContext';
+import CategoryIcon from './CategoryIcon';
+import { animateCardsGSAP } from '../utils/useGSAPIntro';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/ShopStyles.css';
-
-import { fetchPublicProducts } from '../utils/api';
 
 const ShopStyles = () => {
   const { openInquiryModal } = useInquiry();
-  const [productsList, setProductsList] = useState(PRODUCTS_DATA);
   const [activeCategory, setActiveCategory] = useState('all');
   const [wishlist, setWishlist] = useState({});
   const sliderRef = useRef(null);
 
-  useEffect(() => {
-    const loadLiveProducts = async () => {
-      const liveData = await fetchPublicProducts();
-      if (liveData && Array.isArray(liveData) && liveData.length > 0) {
-        setProductsList(liveData);
-      }
-    };
-    loadLiveProducts();
-  }, []);
+  const handleCategorySelect = (catId) => {
+    setActiveCategory(catId);
+    setTimeout(() => {
+      animateCardsGSAP('.shop-product-card');
+    }, 50);
+  };
 
   const toggleWishlist = (e, id) => {
     e.preventDefault();
@@ -46,18 +44,9 @@ const ShopStyles = () => {
     }
   };
 
-  const categories = [
-    { id: 'all', label: 'ALL PIECES' },
-    { id: 'sarees', label: 'SAREES & HALF SAREES' },
-    { id: 'lehengas', label: 'BRIDAL LEHENGAS' },
-    { id: 'fusion', label: 'FUSION WEAR' },
-    { id: 'sherwanis', label: 'SHERWANIS' },
-    { id: 'gowns', label: 'EVENING GOWNS' }
-  ];
-
   const filteredProducts = activeCategory === 'all'
-    ? productsList
-    : productsList.filter(p => p.category === activeCategory);
+    ? PRODUCTS_DATA
+    : PRODUCTS_DATA.filter(p => p.category === activeCategory);
 
   return (
     <section className="shop-styles-section container-fluid py-5">
@@ -69,26 +58,33 @@ const ShopStyles = () => {
             <span className="subtitle-gold">CURATED STYLES</span>
           </div>
 
-          <h2 className="shop-styles-title fw-semibold">EXPLORE OUR SIGNATURE COUTURE</h2>
+          <h2 className="shop-styles-title fw-semibold">
+            <ShinyText text="EXPLORE OUR SIGNATURE COUTURE" color="#2b261f" shineColor="#d4af37" speed={3.5} />
+          </h2>
+          {/* Favicon Accent Motif below title */}
+          {/* <div className="d-flex justify-content-center my-2">
+            <img
+              src={faviconUnderHeading}
+              alt="Heading Motif"
+              style={{ height: '35px', width: 'auto' }}
+              className="curated-title-favicon-img"
+            />
+          </div> */}
 
-          {/* Golden Diamond Divider Line */}
-          <div className="shop-styles-divider mx-auto my-3">
-            <span className="divider-line"></span>
-            <span className="divider-diamond">◆</span>
-            <span className="divider-line"></span>
-          </div>
+
         </div>
 
         {/* Pill Category Filter Tabs */}
         <div className="d-flex justify-content-center flex-wrap gap-2 gap-md-3 mb-4 category-filter-pills px-3">
-          {categories.map((cat) => (
+          {CATEGORIES_DATA.map((cat) => (
             <button
               key={cat.id}
               type="button"
               className={`category-pill-btn ${activeCategory === cat.id ? 'active' : ''}`}
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => handleCategorySelect(cat.id)}
             >
-              {cat.label}
+              <CategoryIcon id={cat.id} size={16} />
+              <span>{cat.name}</span>
             </button>
           ))}
         </div>

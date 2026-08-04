@@ -5,10 +5,10 @@ import './ShinyText.css';
 const ShinyText = ({
   text,
   disabled = false,
-  speed = 3,
+  speed = 2,
   className = '',
-  color = '#2b261f',
-  shineColor = '#d4af37',
+  color = '#b5b5b5',
+  shineColor = '#ffffff',
   spread = 120,
   yoyo = false,
   pauseOnHover = false,

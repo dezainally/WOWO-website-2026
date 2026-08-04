@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { InquiryProvider } from './context/InquiryContext';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import RequestPriceModal from './components/RequestPriceModal.jsx';
 import FloatingWhatsApp from './components/FloatingWhatsApp.jsx';
 import NewsletterPopup from './components/NewsletterPopup.jsx';
+import IntroSplash from './components/IntroSplash.jsx';
 
 import HomePage from './pages/HomePage.jsx';
 import CollectionsPage from './pages/CollectionsPage.jsx';
@@ -15,22 +16,25 @@ import PastWorksPage from './pages/PastWorksPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 
+import { useGSAPIntro } from './utils/useGSAPIntro';
 import './App.css';
 
-// Scroll to top on route change
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+// GSAP Route Initializer & Scroll Restoration
+const GSAPRouteInitializer = () => {
+  useGSAPIntro();
   return null;
 };
 
 function App() {
+  const [introFinished, setIntroFinished] = useState(false);
+
   return (
     <InquiryProvider>
       <Router>
-        <ScrollToTop />
+        {!introFinished && (
+          <IntroSplash onFinish={() => setIntroFinished(true)} />
+        )}
+        <GSAPRouteInitializer />
         <div className="app-container d-flex flex-column min-vh-100 position-relative">
           <Header />
           <main className="flex-grow-1">

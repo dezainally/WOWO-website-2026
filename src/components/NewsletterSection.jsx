@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ShinyText from './ShinyText';
 import '../styles/NewsletterSection.css';
 
 const NewsletterSection = () => {
@@ -21,7 +22,7 @@ const NewsletterSection = () => {
           <div className="position-relative z-1 max-w-650 mx-auto">
             <span className="newsletter-section-tag">JOIN THE WOWO CIRCLE</span>
             <h2 className="newsletter-section-title fw-semibold mt-2 mb-3">
-              Be First to Access Private Exhibition Invites & New Arrivals
+              <ShinyText text="Be First to Access Private Exhibition Invites & New Arrivals" color="#ffffff" shineColor="#f3d798" speed={3.5} />
             </h2>
             <p className="newsletter-section-desc mb-4">
               Subscribe to receive exclusive invitations to our monthly boutique pop-up exhibitions, private bridal styling appointments, and secret seasonal drops.

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import ShinyText from './ShinyText';
 import imageLehenga from '../assets/images/image1.png';
 import imageFusion from '../assets/images/image2.jpg';
 import imageSherwani from '../assets/images/image3.jpg';
@@ -88,7 +89,9 @@ const Testimonials = () => {
         {/* Section Header */}
         <div className="text-center mb-5 testimonials-header px-3">
           <span className="subtitle-gold">PATRON & CELEBRITY STORIES</span>
-          <h2 className="testimonials-title fw-semibold mt-1">Voices of Elegance & Trust</h2>
+          <h2 className="testimonials-title fw-semibold mt-1">
+            <ShinyText text="Voices of Elegance & Trust" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+          </h2>
 
           {/* Diamond motif divider line */}
           <div className="testimonials-divider mx-auto my-3">

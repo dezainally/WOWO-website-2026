@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useInquiry } from '../context/InquiryContext';
+import CategoryIcon from './CategoryIcon';
+import { CATEGORIES_DATA } from '../data/productsData';
 import logoImage from '../assets/wowo-logo-website.avif';
 import '../styles/Header.css';
 
@@ -54,11 +56,41 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className={({ isActive }) => `nav-link nav-link-custom ${isActive ? 'active' : ''}`} to="/collections">
-                  Collections
+
+              {/* Collections with Category Hover Dropdown */}
+              <li className="nav-item position-relative dropdown-parent">
+                <NavLink
+                  className={({ isActive }) => `nav-link nav-link-custom d-flex align-items-center justify-content-center gap-1 ${isActive ? 'active' : ''}`}
+                  to="/collections"
+                >
+                  <span>Collections</span>
+                  <svg className="dropdown-chevron" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M2 4l4 4 4-4" />
+                  </svg>
                 </NavLink>
+
+                {/* Hover Dropdown Menu */}
+                <div className="collections-dropdown-menu">
+                  <div className="dropdown-menu-header">
+                    <span className="dropdown-header-title">COUTURE CATEGORIES</span>
+                  </div>
+                  <div className="dropdown-menu-list">
+                    {CATEGORIES_DATA.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        to={`/collections?cat=${cat.id}`}
+                        className="collections-dropdown-item"
+                      >
+                        <CategoryIcon categoryId={cat.id} isActive={true} size={16} className="dropdown-gold-icon" />
+                        <span className="dropdown-item-title">
+                          {cat.id === 'all' ? 'All Collections' : cat.name}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </li>
+
               <li className="nav-item">
                 <NavLink className={({ isActive }) => `nav-link nav-link-custom ${isActive ? 'active' : ''}`} to="/past-works">
                   Works

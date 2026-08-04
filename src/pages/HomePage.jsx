@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ShinyText from '../components/ShinyText';
 import HeroSection from '../components/HeroSection';
 import CuratedSeason from '../components/CuratedSeason';
 import ShopStyles from '../components/ShopStyles';

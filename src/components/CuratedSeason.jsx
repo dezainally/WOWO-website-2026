@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ShinyText from './ShinyText';
 import imageLehenga from '../assets/images/image1.png';
 import imageFusion from '../assets/images/image2.jpg';
 import imageSherwani from '../assets/images/image3.jpg';
 import imageSaree from '../assets/images/image4.jpg';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/CuratedSeason.css';
 
 const CuratedSeason = () => {
@@ -91,20 +93,21 @@ const CuratedSeason = () => {
       <div className="container position-relative" style={{ zIndex: 2 }}>
         {/* Section Header */}
         <div className="text-center mb-5 curated-header-block">
-          {/* Top Decorative Motif */}
-          <div className="curated-motif mb-3 d-flex justify-content-center">
-            <svg width="60" height="16" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M30 0L33 5L38 8L33 11L30 16L27 11L22 8L27 5L30 0Z" fill="#a07d32" fillOpacity="0.7" />
-              <path d="M0 8H20M40 8H60" stroke="#a07d32" strokeWidth="1" strokeOpacity="0.5" />
-              <circle cx="12" cy="8" r="2" fill="#a07d32" fillOpacity="0.6" />
-              <circle cx="48" cy="8" r="2" fill="#a07d32" fillOpacity="0.6" />
-            </svg>
+          {/* Favicon Accent Motif below title */}
+          <div className="d-flex justify-content-center my-2">
+            <img
+              src={faviconUnderHeading}
+              alt="Heading Motif"
+              style={{ height: '35px', width: 'auto' }}
+              className="curated-title-favicon-img"
+            />
           </div>
 
-          <h2 className="curated-title fw-semibold">CURATED THIS SEASON</h2>
+          <h2 className="curated-title fw-semibold">
+            <ShinyText text="CURATED THIS SEASON" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+          </h2>
 
-          {/* Golden accent line below title */}
-          <div className="curated-title-line mx-auto my-3"></div>
+
 
           <p className="curated-subtitle">
             A blend of classic silhouettes and our signature shine,<br className="d-none d-md-block" />

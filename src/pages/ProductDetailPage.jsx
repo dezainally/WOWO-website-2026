@@ -1,34 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import ShinyText from '../components/ShinyText';
+import ProductCard from '../components/ProductCard';
 import { PRODUCTS_DATA } from '../data/productsData';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
 import '../styles/ProductDetailPage.css';
 
-import { fetchPublicProducts } from '../utils/api';
-
 const ProductDetailPage = () => {
   const { id } = useParams();
   const { openInquiryModal, openWhatsApp, callNow } = useInquiry();
 
-  const [productsList, setProductsList] = useState(PRODUCTS_DATA);
-  const [product, setProduct] = useState(() => {
-    return PRODUCTS_DATA.find((p) => p._id === id || p.id === id || p.sku === id) || PRODUCTS_DATA[0];
-  });
-
-  useEffect(() => {
-    const loadLiveProducts = async () => {
-      const liveData = await fetchPublicProducts();
-      if (liveData && Array.isArray(liveData) && liveData.length > 0) {
-        setProductsList(liveData);
-        const matched = liveData.find((p) => p._id === id || p.id === id || p.sku === id);
-        if (matched) {
-          setProduct(matched);
-        }
-      }
-    };
-    loadLiveProducts();
-  }, [id]);
+  // Find target product or default to first product
+  const product = PRODUCTS_DATA.find((p) => p.id === id) || PRODUCTS_DATA[0];
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('description');
@@ -37,7 +21,24 @@ const ProductDetailPage = () => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [zoomScale, setZoomScale] = useState(1);
 
-  const relatedProducts = productsList.filter((p) => (p._id || p.id) !== (product._id || product.id)).slice(0, 4);
+  // Amazon-style 200% Hover Loupe Zoom state
+  const [isHovered, setIsHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    setMousePos({ x, y });
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setMousePos({ x: 50, y: 50 });
+  };
+
+  const relatedProducts = PRODUCTS_DATA.filter((p) => p.id !== product.id).slice(0, 4);
 
   const handleZoomIn = () => {
     setZoomScale((prev) => Math.min(prev + 0.5, 3));
@@ -112,9 +113,23 @@ const ProductDetailPage = () => {
                     alt={product.name}
                     className="pdp-main-img w-100"
                   />
-                  <span className="zoom-hint-badge position-absolute">
-                    🔍 Click to Fullscreen & Zoom
-                  </span>
+                  <button
+                    type="button"
+                    className="zoom-hint-badge position-absolute d-flex align-items-center gap-2 border-0"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsLightboxOpen(true);
+                    }}
+                    title="Click to view fullscreen"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <polyline points="9 21 3 21 3 15"></polyline>
+                      <line x1="21" y1="3" x2="14" y2="10"></line>
+                      <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>
+                    <span>Click to view fullscreen</span>
+                  </button>
                 </div>
 
                 {/* Thumbnail Selector Strip */}
@@ -140,47 +155,74 @@ const ProductDetailPage = () => {
                 <h1 className="pdp-title fw-semibold mt-1 mb-2">{product.name}</h1>
                 <p className="pdp-short-desc text-muted mb-3">{product.shortDesc}</p>
 
-                <div className="pdp-price-badge-box p-3 rounded-3 bg-light-sand border d-flex align-items-center justify-content-between">
-                  <div>
-                    <span className="small text-muted d-block">Boutique Pricing:</span>
-                    <strong className="fs-5 text-gold font-heading">{product.priceText}</strong>
+                {/* Redesigned Pricing & Made-to-Order Stock Box */}
+                <div className="pdp-price-badge-box p-3.5 p-md-4 rounded-4 border d-flex align-items-center justify-content-between mb-4">
+                  <div className="pdp-pricing-left">
+                    <span className="pdp-pricing-label d-block text-uppercase fw-semibold">BOUTIQUE PRICING</span>
+                    <h3 className="pdp-pricing-value font-heading fw-bold mt-1 mb-0">
+                      {product.priceText ? product.priceText.toUpperCase() : 'PRICE ON REQUEST'}
+                    </h3>
                   </div>
-                  <span className="stock-status-badge">
-                    In Stock • Made-to-Order Fitting Available
-                  </span>
+
+                  {/* Green In Stock & Made-to-Order Badge Container */}
+                  <div className="pdp-stock-badge-container p-3 rounded-3 d-flex align-items-start gap-2.5">
+                    <div className="pdp-stock-check-circle d-flex align-items-center justify-content-center flex-shrink-0">
+                      ✓
+                    </div>
+                    <div>
+                      <div className="pdp-stock-title font-heading fw-bold">In Stock</div>
+                      <div className="pdp-stock-subtitle small">
+                        Made-to-Order Fitting<br />Available
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Primary Call to Actions: Request Price, WhatsApp, Call Now */}
+              {/* Primary Call to Actions: Request Price, WhatsApp, Call Stylist */}
               <div className="pdp-actions-box mb-4">
+                {/* Dark Olive Primary Button */}
                 <button
                   type="button"
                   onClick={() => openInquiryModal(product)}
-                  className="btn-pdp-request-price w-100 py-3 mb-3 d-flex align-items-center justify-content-center gap-2"
+                  className="btn-pdp-request-price w-100 py-3 mb-3 rounded-3 d-flex align-items-center justify-content-center gap-2.5 shadow-sm"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414A1 1 0 0 0 3.707 12.293L1 15.586A1 1 0 0 1 0 14.828V2zm2-1a1 1 0 0 0-1 1v12.828l2.293-2.293A2 2 0 0 1 4.707 12H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <path d="M8 14h.01"></path>
+                    <path d="M12 14h.01"></path>
+                    <path d="M16 14h.01"></path>
                   </svg>
-                  REQUEST PRICE & CUSTOM FITTING
+                  <span>REQUEST PRICE & CUSTOM FITTING</span>
                 </button>
 
-                <div className="row g-2">
-                  <div className="col-sm-6">
+                {/* Secondary Row: WhatsApp & Call Stylist */}
+                <div className="row g-3">
+                  <div className="col-6">
                     <button
                       type="button"
-                      onClick={() => openWhatsApp(product.name)}
-                      className="btn-pdp-whatsapp w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
+                      onClick={() => openWhatsApp(product.name, product.sku)}
+                      className="btn-pdp-whatsapp w-100 py-3 rounded-3 d-flex align-items-center justify-content-center gap-2 text-uppercase"
                     >
-                      💬 WhatsApp Inquiry
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                      </svg>
+                      <span>WHATSAPP INQUIRY</span>
                     </button>
                   </div>
-                  <div className="col-sm-6">
+                  <div className="col-6">
                     <button
                       type="button"
                       onClick={callNow}
-                      className="btn-pdp-call w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
+                      className="btn-pdp-call w-100 py-3 rounded-3 d-flex align-items-center justify-content-center gap-2 text-uppercase"
                     >
-                      📞 Call Stylist
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                      <span>CALL STYLIST</span>
                     </button>
                   </div>
                 </div>
@@ -251,7 +293,9 @@ const ProductDetailPage = () => {
         {/* Related Products Carousel Section */}
         <div className="related-products-section my-5">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h3 className="font-heading fw-semibold fs-3">You May Also Admire</h3>
+            <h3 className="font-heading fw-semibold fs-3">
+              <ShinyText text="You May Also Admire" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+            </h3>
             <Link to="/collections" className="text-gold text-decoration-none small fw-semibold">
               View All Collections →
             </Link>
@@ -259,23 +303,8 @@ const ProductDetailPage = () => {
 
           <div className="row g-4">
             {relatedProducts.map((rel) => (
-              <div key={rel.id} className="col-lg-3 col-sm-6">
-                <div className="catalog-product-card bg-white rounded-3 overflow-hidden border h-100">
-                  <Link to={`/product/${rel.id}`} className="catalog-img-wrapper d-block overflow-hidden">
-                    <img src={rel.images[0]} alt={rel.name} className="catalog-product-img w-100" />
-                  </Link>
-                  <div className="p-3">
-                    <h4 className="catalog-product-name fs-6 mb-1">{rel.name}</h4>
-                    <p className="price-on-request-badge mb-2">{rel.priceText}</p>
-                    <button
-                      type="button"
-                      onClick={() => openInquiryModal(rel)}
-                      className="btn-request-price-catalog w-100"
-                    >
-                      Request Price
-                    </button>
-                  </div>
-                </div>
+              <div key={rel._id || rel.id} className="col-lg-3 col-sm-6">
+                <ProductCard product={rel} />
               </div>
             ))}
           </div>
@@ -346,14 +375,26 @@ const ProductDetailPage = () => {
             </button>
           )}
 
-          {/* Zoomable Main Image Stage */}
-          <div className="pdp-lightbox-img-wrapper" onClick={(e) => e.stopPropagation()}>
+          {/* Amazon-Style 200% Hover Loupe Zoom Image Stage */}
+          <div
+            className="pdp-lightbox-img-wrapper position-relative"
+            onClick={(e) => e.stopPropagation()}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ cursor: 'crosshair' }}
+          >
             <img
               src={product.images[activeImageIndex] || product.images[0]}
               alt={product.name}
               className="pdp-lightbox-img"
-              style={{ transform: `scale(${zoomScale})` }}
+              style={{
+                transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
+                transform: `scale(${isHovered ? 2 : zoomScale})`,
+                transition: isHovered ? 'transform 0.15s ease-out' : 'all 0.3s ease',
+                willChange: 'transform, transform-origin',
+              }}
             />
+
           </div>
 
           {/* Next Image Arrow */}

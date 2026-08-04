@@ -199,11 +199,97 @@
 }
 
 .dropdown-chevron {
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
 }
 
-.nav-link-custom:hover .dropdown-chevron {
-  transform: translateY(1px);
+.dropdown-parent:hover .dropdown-chevron {
+  transform: rotate(180deg);
+  color: #b89851;
+}
+
+/* --------------------------------------------------
+   Collections Hover Dropdown Menu (Exact Screenshot Alignment)
+-------------------------------------------------- */
+.dropdown-parent {
+  position: relative;
+}
+
+.collections-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateY(8px);
+  width: 250px;
+  background-color: #ffffff;
+  border: 1px solid #f0e6d6 !important;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 1040;
+  padding: 18px 20px !important;
+}
+
+.dropdown-parent:hover .collections-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.dropdown-menu-header {
+  border-bottom: 1px solid #f2ebd9;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.dropdown-header-title {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #b38b3f;
+  text-transform: uppercase;
+  display: block;
+}
+
+.dropdown-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.collections-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.collections-dropdown-item:hover {
+  background-color: #fdfbf7;
+}
+
+.dropdown-gold-icon {
+  color: #b38b3f;
+  flex-shrink: 0;
+}
+
+.dropdown-item-title {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2b2b2b !important;
+  transition: color 0.15s ease;
+}
+
+.collections-dropdown-item:hover .dropdown-item-title {
+  color: #b38b3f !important;
 }
 
 /* --------------------------------------------------
