@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ShinyText from '../components/ShinyText';
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/ContactPage.css';
 
 const ContactPage = () => {
@@ -14,12 +15,19 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="contact-page-wrapper bg-light-sand py-4">
+    <div className="contact-page-wrapper bg-light-sand">
 
       {/* Header Banner */}
       <div className="contact-header-banner text-center py-5 bg-dark text-white position-relative">
         <div className="container px-3">
-          <span className="subtitle-gold letter-spacing-3">WE WOULD LOVE TO ASSIST YOU</span>
+          <div className="d-flex justify-content-center my-2">
+            <img
+              src={faviconUnderHeading}
+              alt="Heading Motif"
+              style={{ height: '35px', width: 'auto' }}
+              className="curated-title-favicon-img"
+            />
+          </div>
           <h1 className="contact-header-title fw-semibold mt-2 mb-3">
             <ShinyText text="Contact WOWO Studio" color="#ffffff" shineColor="#f3d798" speed={3.5} />
           </h1>
@@ -35,7 +43,16 @@ const ContactPage = () => {
           {/* Left Column: Contact Cards */}
           <div className="col-lg-5">
             <div className="contact-info-card bg-white p-4 p-md-5 rounded-4 border shadow-sm h-100">
-              <span className="subtitle-gold">FLAGSHIP BOUTIQUE STUDIO</span>
+              {/* <div className="d-flex justify-content-center my-2">
+                <img
+                  src={faviconUnderHeading}
+                  alt="Heading Motif"
+                  style={{ height: '35px', width: 'auto' }}
+                  className="curated-title-favicon-img"
+                />
+              </div> */}
+              <span className="video-section-subtitle">FLAGSHIP BOUTIQUE STUDIO</span>
+
               <h2 className="font-heading fw-semibold fs-3 mt-1 mb-4">
                 <ShinyText text="Hyderabad Studio" color="#1c1917" shineColor="#d4af37" speed={3.5} />
               </h2>
@@ -116,7 +133,10 @@ const ContactPage = () => {
           {/* Right Column: General Inquiry Form */}
           <div className="col-lg-7">
             <div className="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
-              <span className="subtitle-gold">GENERAL & BOUTIQUE INQUIRIES</span>
+
+              <span className="video-section-subtitle">GENERAL & BOUTIQUE INQUIRIES</span>
+
+
               <h2 className="font-heading fw-semibold fs-3 mt-1 mb-3">
                 <ShinyText text="Send Us a Message" color="#1c1917" shineColor="#d4af37" speed={3.5} />
               </h2>

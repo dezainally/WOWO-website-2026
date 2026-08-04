@@ -9,6 +9,7 @@ import Testimonials from '../components/Testimonials';
 import NewsletterSection from '../components/NewsletterSection';
 import { UPCOMING_EXHIBITIONS } from '../data/exhibitionsData';
 import { useInquiry } from '../context/InquiryContext';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
@@ -77,8 +78,18 @@ const HomePage = () => {
       <section className="boutique-trust-section py-5 bg-white">
         <div className="container px-3 px-lg-4">
           <div className="text-center mb-5 max-w-700 mx-auto">
-            <span className="subtitle-gold">THE BOUTIQUE EXPERIENCE</span>
-            <h2 className="font-heading fw-semibold fs-2 mt-1">Why High-Fashion Patrons Choose WOWO</h2>
+            <div className="d-flex justify-content-center my-2">
+              <img
+                src={faviconUnderHeading}
+                alt="Heading Motif"
+                style={{ height: '35px', width: 'auto' }}
+                className="curated-title-favicon-img"
+              />
+            </div>
+
+            <h2 className="testimonials-title fw-semibold mt-1">
+              <ShinyText text="Why High-Fashion Patrons Choose WOWO" color="#1c1917" shineColor="#d4af37" speed={3.5} />
+            </h2>
           </div>
 
           <div className="row g-4">

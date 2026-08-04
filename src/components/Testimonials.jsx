@@ -5,6 +5,7 @@ import imageFusion from '../assets/images/image2.jpg';
 import imageSherwani from '../assets/images/image3.jpg';
 import imageSaree from '../assets/images/image4.jpg';
 import heroImage from '../assets/images/heroimage.webp';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/Testimonials.css';
 
 const TESTIMONIALS_DATA = [
@@ -88,18 +89,20 @@ const Testimonials = () => {
 
         {/* Section Header */}
         <div className="text-center mb-5 testimonials-header px-3">
-          <span className="subtitle-gold">PATRON & CELEBRITY STORIES</span>
+          <div className="d-flex justify-content-center my-2">
+            <img
+              src={faviconUnderHeading}
+              alt="Heading Motif"
+              style={{ height: '35px', width: 'auto' }}
+              className="curated-title-favicon-img"
+            />
+          </div>
           <h2 className="testimonials-title fw-semibold mt-1">
             <ShinyText text="Voices of Elegance & Trust" color="#1c1917" shineColor="#d4af37" speed={3.5} />
           </h2>
-
-          {/* Diamond motif divider line */}
-          <div className="testimonials-divider mx-auto my-3">
-            <span className="divider-line"></span>
-            <span className="divider-diamond">◆</span>
-            <span className="divider-line"></span>
-          </div>
-        </div>
+          <p className="testimonials-subtitle text-muted mt-2 max-w-700 mx-auto">
+            Discover authentic stories from our cherished brides, celebrities, and couture patrons who experienced the unmatched luxury and craftsmanship of WOWO Studio.
+          </p>        </div>
 
         {/* Testimonials Slider Wrapper */}
         <div className="testimonials-slider-wrapper position-relative">

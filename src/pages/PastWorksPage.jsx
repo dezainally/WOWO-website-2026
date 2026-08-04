@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ShinyText from '../components/ShinyText';
 import { PAST_WORKS_DATA } from '../data/pastWorksData';
 import { useInquiry } from '../context/InquiryContext';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/PastWorksPage.css';
 
 const PastWorksPage = () => {
@@ -26,7 +27,14 @@ const PastWorksPage = () => {
 
         {/* Page Hero Header */}
         <div className="text-center mb-5 past-works-header max-w-800 mx-auto px-3">
-          <span className="subtitle-gold">SINCE 2020 COUTURE ARCHIVE</span>
+          <div className="d-flex justify-content-center my-2">
+            <img
+              src={faviconUnderHeading}
+              alt="Heading Motif"
+              style={{ height: '35px', width: 'auto' }}
+              className="curated-title-favicon-img"
+            />
+          </div>
           <h1 className="past-works-title fw-semibold mt-1">
             <ShinyText text="Celebrity & Bespoke Boutique Creations" color="#1c1917" shineColor="#d4af37" speed={3.5} />
           </h1>

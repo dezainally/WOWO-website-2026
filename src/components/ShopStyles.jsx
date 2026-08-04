@@ -54,24 +54,18 @@ const ShopStyles = () => {
 
         {/* Section Header with Ornament Motif */}
         <div className="text-center mb-4 shop-styles-header px-3">
-          <div className="subtitle-gold-wrapper mb-2 d-flex align-items-center justify-content-center gap-2">
-            <span className="subtitle-gold">CURATED STYLES</span>
-          </div>
-
-          <h2 className="shop-styles-title fw-semibold">
-            <ShinyText text="EXPLORE OUR SIGNATURE COUTURE" color="#2b261f" shineColor="#d4af37" speed={3.5} />
-          </h2>
-          {/* Favicon Accent Motif below title */}
-          {/* <div className="d-flex justify-content-center my-2">
+          <div className="d-flex justify-content-center my-2">
             <img
               src={faviconUnderHeading}
               alt="Heading Motif"
               style={{ height: '35px', width: 'auto' }}
               className="curated-title-favicon-img"
             />
-          </div> */}
+          </div>
 
-
+          <h2 className="shop-styles-title fw-semibold">
+            <ShinyText text="EXPLORE OUR SIGNATURE COUTURE" color="#2b261f" shineColor="#d4af37" speed={3.5} />
+          </h2>
         </div>
 
         {/* Pill Category Filter Tabs */}

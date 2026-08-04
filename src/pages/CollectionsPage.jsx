@@ -7,6 +7,7 @@ import CategoryIcon from '../components/CategoryIcon';
 import ProductCard from '../components/ProductCard';
 import { animateCardsGSAP } from '../utils/useGSAPIntro';
 import NewsletterSection from '../components/NewsletterSection';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import wowoFaviconHeading from '../assets/wowo-favicon-heading.png';
 import '../styles/CollectionsPage.css';
 
@@ -43,12 +44,19 @@ const CollectionsPage = () => {
   };
 
   return (
-    <div className="collections-page-wrapper bg-light-sand py-4">
+    <div className="collections-page-wrapper bg-light-sand">
 
       {/* Page Header */}
       <div className="catalog-header-banner text-center py-5 bg-dark text-white position-relative">
         <div className="container px-3">
-          <span className="subtitle-gold letter-spacing-3">EXCLUSIVE LUXURY CATALOG</span>
+          <div className="d-flex justify-content-center my-2">
+            <img
+              src={faviconUnderHeading}
+              alt="Heading Motif"
+              style={{ height: '35px', width: 'auto' }}
+              className="curated-title-favicon-img"
+            />
+          </div>
           <h1 className="catalog-header-title fw-semibold mt-2 mb-3">
             <ShinyText text="WOWO Boutique Collections" color="#ffffff" shineColor="#f3d798" speed={3.5} />
           </h1>

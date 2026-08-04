@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Card Details Box - Centered Layout */}
-      <div className="luxury-card-body p-3.5 p-md-4 text-center d-flex flex-column flex-grow-1">
+      <div className="luxury-card-body p-md-3 text-center d-flex flex-column flex-grow-1">
 
         {/* Uppercase Serif Title */}
         <Link to={`/product/${productId}`} className="text-decoration-none">

@@ -18,6 +18,13 @@
   margin-bottom: 4px;
 }
 
+.testimonials-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #78716c;
+  line-height: 1.6;
+}
+
 .testimonials-divider {
   display: flex;
   align-items: center;

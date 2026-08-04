@@ -5,17 +5,25 @@ import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
 import heroImage from '../assets/images/heroimage.webp';
 import image1 from '../assets/images/image1.png';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/AboutPage.css';
 
 const AboutPage = () => {
   const { openInquiryModal } = useInquiry();
 
   return (
-    <div className="about-page-wrapper bg-light-sand py-4">
+    <div className="about-page-wrapper bg-light-sand">
       {/* Header Banner */}
       <div className="about-header-banner text-center py-5 bg-dark text-white position-relative">
         <div className="container px-3">
-          <span className="subtitle-gold letter-spacing-3">THE ARTISTRY OF WOWO STUDIO</span>
+          <div className="d-flex justify-content-center my-2">
+            <img
+              src={faviconUnderHeading}
+              alt="Heading Motif"
+              style={{ height: '35px', width: 'auto' }}
+              className="curated-title-favicon-img"
+            />
+          </div>
           <h1 className="about-header-title fw-semibold mt-2 mb-3">
             <ShinyText text="Our Legacy & Craftsmanship" color="#ffffff" shineColor="#f3d798" speed={3.5} />
           </h1>
@@ -36,7 +44,16 @@ const AboutPage = () => {
           </div>
 
           <div className="col-lg-6">
-            <span className="subtitle-gold">VISIONARY DESIGN</span>
+            {/* <div className="d-flex justify-content-center my-2">
+              <img
+                src={faviconUnderHeading}
+                alt="Heading Motif"
+                style={{ height: '35px', width: 'auto' }}
+                className="curated-title-favicon-img"
+              />
+            </div> */}
+            <span className="video-section-subtitle">VISIONARY DESIGN</span>
+
             <h2 className="font-heading fw-semibold fs-2 mt-1 mb-3">
               <ShinyText text="A Passion for Heritage & Pure Silks" color="#1c1917" shineColor="#d4af37" speed={3.5} />
             </h2>

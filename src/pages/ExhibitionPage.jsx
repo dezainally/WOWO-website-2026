@@ -4,6 +4,7 @@ import { UPCOMING_EXHIBITIONS, EXHIBITION_GALLERY, PAST_HIGHLIGHTS } from '../da
 import { useInquiry } from '../context/InquiryContext';
 import NewsletterSection from '../components/NewsletterSection';
 import heroImage from '../assets/images/heroimage.webp';
+import faviconUnderHeading from '../assets/favicon-under-heading.png';
 import '../styles/ExhibitionPage.css';
 
 const ExhibitionPage = () => {
@@ -72,7 +73,7 @@ const ExhibitionPage = () => {
   };
 
   return (
-    <div className="exhibition-page-wrapper bg-light-sand py-4">
+    <div className="exhibition-page-wrapper bg-light-sand">
 
       {/* Hero Banner Section */}
       <div className="exhibition-hero-banner text-center py-5 bg-dark text-white position-relative">
@@ -116,7 +117,14 @@ const ExhibitionPage = () => {
         {/* Section 1: Upcoming Monthly Exhibition Announcements */}
         <section id="schedule" className="mb-5 pt-3">
           <div className="text-center mb-5 max-w-700 mx-auto">
-            <span className="subtitle-gold">MONTHLY POP-UP DATES</span>
+            <div className="d-flex justify-content-center my-2">
+              <img
+                src={faviconUnderHeading}
+                alt="Heading Motif"
+                style={{ height: '35px', width: 'auto' }}
+                className="curated-title-favicon-img"
+              />
+            </div>
             <h2 className="font-heading fw-semibold fs-2 mt-1">
               <ShinyText text="Upcoming Exhibition Schedule" color="#1c1917" shineColor="#d4af37" speed={3.5} />
             </h2>
@@ -171,7 +179,14 @@ const ExhibitionPage = () => {
         {/* Section 2: Exhibition Gallery (Past Events with Video & Photo Lightbox) */}
         <section className="mb-5 py-4">
           <div className="text-center mb-5 max-w-700 mx-auto">
-            <span className="subtitle-gold">EVENT HIGHLIGHTS & MEDIA</span>
+            <div className="d-flex justify-content-center my-2">
+              <img
+                src={faviconUnderHeading}
+                alt="Heading Motif"
+                style={{ height: '35px', width: 'auto' }}
+                className="curated-title-favicon-img"
+              />
+            </div>
             <h2 className="font-heading fw-semibold fs-2 mt-1">
               <ShinyText text="Glimpses From Previous Exhibitions" color="#1c1917" shineColor="#d4af37" speed={3.5} />
             </h2>
@@ -216,7 +231,16 @@ const ExhibitionPage = () => {
           <div className="row align-items-center g-4 g-lg-5">
 
             <div className="col-lg-5">
-              <span className="subtitle-gold">VIP ACCESS REGISTRATION</span>
+              {/* <div className="d-flex justify-content-center my-2">
+                <img
+                  src={faviconUnderHeading}
+                  alt="Heading Motif"
+                  style={{ height: '35px', width: 'auto' }}
+                  className="curated-title-favicon-img"
+                />
+              </div> */}
+              <span className="video-section-subtitle">VIP ACCESS REGISTRATION</span>
+
               <h2 className="font-heading fw-semibold fs-2 mt-1 mb-3">
                 <ShinyText text="Reserve Your Invitation Pass" color="#1c1917" shineColor="#d4af37" speed={3.5} />
               </h2>
