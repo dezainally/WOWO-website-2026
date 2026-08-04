@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useInquiry } from '../context/InquiryContext';
-import logoImage from '../assets/wowo-logo-website.avif';
+import logoImage from '../assets/wowo-footer-logo-website.avif';
 import '../styles/Footer.css';
 
 const Footer = () => {
