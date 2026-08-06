@@ -136,7 +136,7 @@ const importData = async () => {
 
     // Import Initial Hero Banner
     await Banner.create({
-      announcementText: '✨ CELEBRATE WITH WOWO STUDIO: EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨',
+      announcementText: '✨ EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨',
       announcementPhone: '+91 96667 48789',
       heroBadge: 'BESPOKE INDIAN BRIDAL & HERITAGE WEAVES',
       heroTitle: 'ROYAL ELEGANCE IN EVERY THREAD',

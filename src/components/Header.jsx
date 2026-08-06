@@ -17,8 +17,8 @@ const Header = () => {
         <div className="announcement-bar d-flex align-items-center justify-content-between px-3">
           <div className="marquee-container flex-grow-1">
             <div className="marquee-content">
-              <span>✨ CELEBRATE WITH WOWO STUDIO: EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨</span>
-              <span>✨ CELEBRATE WITH WOWO STUDIO: EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨</span>
+              <span>✨ EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨</span>
+              <span>✨ EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨</span>
             </div>
           </div>
           <div className="d-flex align-items-center gap-3 ms-2">

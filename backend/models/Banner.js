@@ -4,7 +4,7 @@ const bannerSchema = new mongoose.Schema(
   {
     announcementText: {
       type: String,
-      default: '✨ CELEBRATE WITH WOWO STUDIO: EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨'
+      default: '✨ EXPLORE OUR MONTHLY BOUTIQUE EXHIBITIONS & BESPOKE BRIDAL COUTURE! CALL / INQUIRE FOR PRIVATE FITTINGS ✨'
     },
     announcementPhone: {
       type: String,
